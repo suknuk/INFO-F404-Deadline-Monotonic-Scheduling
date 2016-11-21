@@ -1,37 +1,12 @@
 #include <iostream>
 #include <string.h>
-#include <sstream>
-#include <fstream>
-
-static void show_usage(char* argv0)
-{
-	std::cerr << "Usage: " << argv0 << " [-g | -p] <tasksFile> <processorsNbr>\n" 
-		<< "\t-p\t\tPartitioned scheduling strategy\n"
-		<< "\t-g\t\tGlobal scheduling strategy\n"
-		<< "\t<tasksFile>\tFile describing the tasks\n"
-		<< "\t<processorsNbr>\tNumber of processors contained by the System"
-		<< std::endl;
-}
-
-inline bool does_file_exist(char* file_name)
-{
-	std::string file(file_name);
-	std::ifstream f(file.c_str());
-	return f.good();
-}
-
-inline bool is_number(char* argv)
-{
-	int number;
-	std::istringstream ss(argv);
-	if (!((ss >> number) && (ss.eof()))) {
-		return false; 
-	}
-	return true;
-}
+#include "usefull_methods.h"
 
 int main(int argc, char* argv[])
 {
+	// false -> partitioned, true -> global
+	bool scheduling_type;
+	std::string file_name;
 	int processors;
 
 	// Checking argument input size
@@ -43,21 +18,35 @@ int main(int argc, char* argv[])
 		std::cerr << "Unrecognized argument " << argv[1] << std::endl;
 	} 
 	// Checking tasks file
-	else if (!does_file_exist(argv[2])){
+	else if (!does_file_exist(argv[2], &file_name)){
 		std::cerr << argv[2] << " cannot be opened" << std::endl;
 	}
 	// Checking if <processorsNbr> is a integer
-	else if (!is_number(argv[3]))
+	else if (!is_number(argv[3], &processors))
 	{
 		std::cerr << "Number of processors must be a integer" << std::endl;		
 	}
 	else 
 	{
-		std::cout << "Valid input!" << std::endl;
+		std::string scheduling_type_name;
+		if (scheduling_type) {
+			scheduling_type_name = "global";
+		} else {
+			scheduling_type_name = "partitioned";
+		}
+		std::cout << "Simulating system " << file_name << " in the " 
+			<< scheduling_type_name << " strategy with " << processors 
+			<< " processors." << std::endl;
+
+		if (scheduling_type) {
+			// Simulate global
+		} else {
+			// Simulate partitioned
+		}	
+
 		return 0;
 	}
-	
-	
+		
 	show_usage(argv[0]);
 	return 1;
 }
