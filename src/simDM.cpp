@@ -43,15 +43,18 @@ int main(int argc, char* argv[])
 		// getting vector of tasls
 		std::vector<Task> tasks = read_tasks_file(argv[2]);
 
+		for (int i = 0; i < tasks.size(); i++) {
+			std::cout << tasks[i].get_offset() << " " 
+				<< tasks[i].get_period() << " " 
+				<< tasks[i].get_deadline() << " " 
+				<< tasks[i].get_wcet() << std::endl;
+		}
+
 		if (scheduling_type) {
 			// Simulate global
 		} else {
 			// Simulate partitioned
 		}
-
-		//deleteme
-		Task task(0,10,10,3);		
-		std::cout << task.get_period() << " " << task.calculate_utilization() << std::endl;
 		
 		return 0;
 	}

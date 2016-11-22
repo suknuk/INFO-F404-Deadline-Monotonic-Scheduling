@@ -46,10 +46,11 @@ std::vector<Task> read_tasks_file(char* file_name)
 	}
 
 	int offset, period, deadline, wcet;
+	std::string line;
 	// Read until no more tasks are left
-	
-	while (!file.eof()) {
-		file >> offset >> period >> deadline >> wcet;
+	while (std::getline(file, line)) {
+		std::stringstream ss(line);
+		ss >> offset >> period >> deadline >> wcet;
 		Task task(offset, period, deadline, wcet);
 		tasks.push_back(task);
 	}
