@@ -8,9 +8,9 @@ Task::Task (int offset, int period, int deadline, int wcet)
 	this->wcet = wcet;
 }
 
-int Task::calculate_utilization()
-{
-	return 0;
+double Task::calculate_utilization() const
+{	
+	return static_cast<double>(this->wcet) / static_cast<double>(this->period);
 }
 
 int Task::get_offset() const

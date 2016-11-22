@@ -7,7 +7,7 @@ private:
 	int offset, period, deadline, wcet;
 public:
 	Task(int,int,int,int);
-	int calculate_utilization();
+	double calculate_utilization() const;
 	
 	// getters
 	int get_offset() const;

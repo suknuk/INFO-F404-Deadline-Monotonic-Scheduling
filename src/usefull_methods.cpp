@@ -35,4 +35,24 @@ bool is_number(char* argv, int* number)
 	return true;
 }
 
+std::vector<Task> read_tasks_file(char* file_name)
+{
+	std::vector<Task> tasks;
+	
+	std::ifstream file(file_name);
+	if (!file) {
+		std::cerr << "Failed to open " << file_name << std::endl;
+		return tasks;
+	}
 
+	int offset, period, deadline, wcet;
+	// Read until no more tasks are left
+	
+	while (!file.eof()) {
+		file >> offset >> period >> deadline >> wcet;
+		Task task(offset, period, deadline, wcet);
+		tasks.push_back(task);
+	}
+	
+	return tasks;
+}

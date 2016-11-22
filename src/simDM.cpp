@@ -1,6 +1,8 @@
 #include <iostream>
 #include <string.h>
 #include "usefull_methods.h"
+#include "task.h"
+#include <vector>
 
 int main(int argc, char* argv[])
 {
@@ -34,16 +36,23 @@ int main(int argc, char* argv[])
 		} else {
 			scheduling_type_name = "partitioned";
 		}
-		std::cout << "Simulating system " << file_name << " in the " 
+		std::cout << "Simulating system described in " << file_name << " in the " 
 			<< scheduling_type_name << " strategy with " << processors 
 			<< " processors." << std::endl;
+
+		// getting vector of tasls
+		std::vector<Task> tasks = read_tasks_file(argv[2]);
 
 		if (scheduling_type) {
 			// Simulate global
 		} else {
 			// Simulate partitioned
-		}	
+		}
 
+		//deleteme
+		Task task(0,10,10,3);		
+		std::cout << task.get_period() << " " << task.calculate_utilization() << std::endl;
+		
 		return 0;
 	}
 		
