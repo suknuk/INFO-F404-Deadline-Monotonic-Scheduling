@@ -7,6 +7,9 @@
 // Displaying text on how to use the program
 void show_usage(char* argv0);
 
+// Checking if argument is -p or -g
+bool is_arg_p_or_g(char* argv, bool &type);
+
 // checking if a file exists
 bool does_file_exist(char* argv, std::string *file_name);
 

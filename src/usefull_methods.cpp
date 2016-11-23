@@ -14,6 +14,22 @@ void show_usage(char* argv0)
 		<< std::endl;
 }
 
+
+bool is_arg_p_or_g(char* argv, bool &type)
+{
+	int is_p = strcmp(argv, "-p"); 
+	int is_g = strcmp(argv, "-g");
+ 
+	if (is_p == 0) { 
+		type = false;
+	} else if( is_g == 0) {
+		type = true;
+	} else {
+		return false;
+	}
+	return true;
+}
+
 bool does_file_exist(char* argv, std::string *file_name)
 {
 	std::string file(argv);

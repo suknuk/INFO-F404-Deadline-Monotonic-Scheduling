@@ -17,7 +17,7 @@ int main(int argc, char* argv[])
 		std::cerr << "Wrong number of arguments!" << std::endl;
 	}
 	// Checking -p | -g
-	else if (!(strcmp(argv[1], "-p") == 0 || strcmp(argv[1], "-g") == 0)) {
+	else if (!is_arg_p_or_g(argv[1], scheduling_type)) {
 		std::cerr << "Unrecognized argument " << argv[1] << std::endl;
 	} 
 	// Checking tasks file
@@ -31,25 +31,18 @@ int main(int argc, char* argv[])
 	}
 	else 
 	{
-		std::string scheduling_type_name;
-		if (scheduling_type) {
-			scheduling_type_name = "global";
-		} else {
-			scheduling_type_name = "partitioned";
-		}
-		std::cout << "Simulating system described in " << file_name << " in the " 
-			<< scheduling_type_name << " strategy with " << processors 
-			<< " processors." << std::endl;
+		// Stating the mode with input data that will be executed
+		std::cout << "Simulating system described in " << file_name << " in the "
+			<< ((scheduling_type)?"global":"partitioned") << " strategy with "
+			<< processors << " processors." << std::endl;
 
 		// getting vector of tasls
 		std::vector<Task> tasks = read_tasks_file(argv[2]);
-				
 		std::sort(tasks.begin(), tasks.end());
-
 
 		std::cout << "Offset\t\tPeriod\t\tDeadline\tWCET\t\tUtilization" << std::endl;
 
-		for (int i = 0; i < tasks.size(); i++) {
+		for (unsigned i = 0; i < tasks.size(); i++) {
 			std::cout << tasks[i].get_offset() << "\t\t" 
 				<< tasks[i].get_period() << "\t\t" 
 				<< tasks[i].get_deadline() << "\t\t" 
