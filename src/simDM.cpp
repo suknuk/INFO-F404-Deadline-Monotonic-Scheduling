@@ -3,6 +3,7 @@
 #include "usefull_methods.h"
 #include "task.h"
 #include <vector>
+#include <algorithm>
 
 int main(int argc, char* argv[])
 {
@@ -42,12 +43,19 @@ int main(int argc, char* argv[])
 
 		// getting vector of tasls
 		std::vector<Task> tasks = read_tasks_file(argv[2]);
+				
+		std::sort(tasks.begin(), tasks.end());
+
+
+		std::cout << "Offset\t\tPeriod\t\tDeadline\tWCET\t\tUtilization" << std::endl;
 
 		for (int i = 0; i < tasks.size(); i++) {
-			std::cout << tasks[i].get_offset() << " " 
-				<< tasks[i].get_period() << " " 
-				<< tasks[i].get_deadline() << " " 
-				<< tasks[i].get_wcet() << std::endl;
+			std::cout << tasks[i].get_offset() << "\t\t" 
+				<< tasks[i].get_period() << "\t\t" 
+				<< tasks[i].get_deadline() << "\t\t" 
+				<< tasks[i].get_wcet() << "\t\t"
+				<< tasks[i].calculate_utilization()
+				<< std::endl;
 		}
 
 		if (scheduling_type) {

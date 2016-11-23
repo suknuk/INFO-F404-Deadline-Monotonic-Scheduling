@@ -16,4 +16,8 @@ public:
 	int get_wcet() const;
 };
 
+// overloading the comparison operator so we can sort 
+// Task items in a vector
+bool operator<(const Task &t1, const Task &t2);
+
 #endif

@@ -32,3 +32,11 @@ int Task::get_wcet() const
 {
 	return this->wcet;
 }
+
+bool operator<(const Task &t1, const Task &t2)
+{
+	return t1.get_deadline() < t2.get_deadline();
+}
+
+
+
