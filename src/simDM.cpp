@@ -36,7 +36,9 @@ int main(int argc, char* argv[])
 			<< ((scheduling_type)?"global":"partitioned") << " strategy with "
 			<< processors << " processors." << std::endl;
 
-		// getting vector of tasls
+		// over interval I = [0; max_offset + 2* hyper_period] -- p = lcm
+
+		// getting vector of tasks
 		std::vector<Task> tasks = read_tasks_file(argv[2]);
 		std::sort(tasks.begin(), tasks.end());
 
@@ -50,6 +52,10 @@ int main(int argc, char* argv[])
 				<< tasks[i].calculate_utilization()
 				<< std::endl;
 		}
+
+		std::cout << "Total utilization: " << total_utilization(tasks) 
+			<< " over " << processors << " processors over the interval of " 
+			<< interval(tasks) << std::endl;
 
 		if (scheduling_type) {
 			// Simulate global

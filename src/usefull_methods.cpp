@@ -2,6 +2,7 @@
 #include <string.h>
 #include <sstream>
 #include <fstream>
+#include <numeric>
 #include "usefull_methods.h"
 
 void show_usage(char* argv0)
@@ -73,3 +74,52 @@ std::vector<Task> read_tasks_file(char* file_name)
 	
 	return tasks;
 }
+
+
+double total_utilization(std::vector<Task> &tasks)
+{
+	double total_utilization;
+			
+	for (unsigned i = 0; i < tasks.size(); i++) {
+		total_utilization += tasks[i].calculate_utilization();
+	}
+
+	return total_utilization;
+}
+
+int gcd(int a, int b)
+{
+	if (b == 0) return a;
+	return gcd(b,a%b);
+}
+
+int lcm(int a, int b)
+{
+	return a * (b / gcd(a, b));
+}
+
+int interval(std::vector<Task> &tasks)
+{
+	int max_offset = 0;
+	int period = tasks[0].get_period();
+
+	for (unsigned i = 0; i < tasks.size(); i++) {
+		// Find the maximum offset
+		if (tasks[i].get_offset() > max_offset) { max_offset=tasks[i].get_offset(); }
+		// Calculate the lcm
+		if (i+1 < tasks.size()){
+			period = lcm(period, tasks[i+1].get_period());
+		}
+	}
+
+	return max_offset + 2 * period;
+}
+
+
+
+
+
+
+
+
+

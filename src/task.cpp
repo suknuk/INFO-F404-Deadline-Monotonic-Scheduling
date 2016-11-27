@@ -1,7 +1,12 @@
 #include "task.h"
+#include <stdexcept>
 
 Task::Task (int offset, int period, int deadline, int wcet)
 {
+	// We only consider constrained deadlines, so we do a check
+	if (deadline > period) {
+		throw std::invalid_argument("Only constrained deadlines are allowed.");
+	}
 	this->offset = offset;
 	this->period = period;
 	this->deadline = deadline;
