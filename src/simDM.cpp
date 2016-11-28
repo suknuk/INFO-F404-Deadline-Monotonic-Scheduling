@@ -1,9 +1,10 @@
 #include <iostream>
-#include <string.h>
+#include <string>
 #include "usefull_methods.h"
 #include "task.h"
 #include <vector>
 #include <algorithm>
+#include "simulate.h"
 
 int main(int argc, char* argv[])
 {
@@ -36,8 +37,6 @@ int main(int argc, char* argv[])
 			<< ((scheduling_type)?"global":"partitioned") << " strategy with "
 			<< processors << " processors." << std::endl;
 
-		// over interval I = [0; max_offset + 2* hyper_period] -- p = lcm
-
 		// getting vector of tasks
 		std::vector<Task> tasks = read_tasks_file(argv[2]);
 		std::sort(tasks.begin(), tasks.end());
@@ -58,7 +57,7 @@ int main(int argc, char* argv[])
 			<< interval(tasks) << std::endl;
 
 		if (scheduling_type) {
-			// Simulate global
+			simulate_global(tasks, processors);
 		} else {
 			// Simulate partitioned
 		}

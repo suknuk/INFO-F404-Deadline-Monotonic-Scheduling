@@ -1,5 +1,5 @@
 #include <iostream>
-#include <string.h>
+#include <string>
 #include <sstream>
 #include <fstream>
 #include <numeric>
@@ -18,12 +18,16 @@ void show_usage(char* argv0)
 
 bool is_arg_p_or_g(char* argv, bool &type)
 {
-	int is_p = strcmp(argv, "-p"); 
-	int is_g = strcmp(argv, "-g");
+	std::string arg (argv);
+	std::string p ("-p");
+	std::string g ("-g");
+	
+	//int is_p = strcmp(argv, "-p"); 
+	//int is_g = strcmp(argv, "-g");
  
-	if (is_p == 0) { 
+	if (p.compare(arg) == 0) { 
 		type = false;
-	} else if( is_g == 0) {
+	} else if (g.compare(arg) == 0) {
 		type = true;
 	} else {
 		return false;
@@ -75,7 +79,6 @@ std::vector<Task> read_tasks_file(char* file_name)
 	return tasks;
 }
 
-
 double total_utilization(std::vector<Task> &tasks)
 {
 	double total_utilization;
@@ -100,6 +103,10 @@ int lcm(int a, int b)
 
 int interval(std::vector<Task> &tasks)
 {
+	if (tasks.empty()){
+		return 0;
+	}
+	
 	int max_offset = 0;
 	int period = tasks[0].get_period();
 

@@ -28,7 +28,7 @@ int gcd(int a, int b);
 // Calculate lcm of 2 numbers
 int lcm(int a, int b);
 
-// Calculate the interval
+// Calculate the interval I = [0; max_offset + 2* hyper_period] -- p = lcm
 int interval(std::vector<Task> &tasks);
 
 #endif
