@@ -21,9 +21,6 @@ bool is_arg_p_or_g(char* argv, bool &type)
 	std::string arg (argv);
 	std::string p ("-p");
 	std::string g ("-g");
-	
-	//int is_p = strcmp(argv, "-p"); 
-	//int is_g = strcmp(argv, "-g");
  
 	if (p.compare(arg) == 0) { 
 		type = false;

@@ -4,7 +4,7 @@
 class Task 
 {
 private:
-	int offset, period, deadline, wcet;
+	int offset, period, deadline, wcet, priority;
 public:
 	Task(int,int,int,int);
 	double calculate_utilization() const;
@@ -14,6 +14,7 @@ public:
 	int get_period() const;
 	int get_deadline() const;
 	int get_wcet() const;
+
 };
 
 // overloading the comparison operator so we can sort 

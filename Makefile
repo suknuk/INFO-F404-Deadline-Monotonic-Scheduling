@@ -4,7 +4,7 @@ CFLAGS = -c -Wall -Wextra
 all: simDM
 
 simDM: simDM.o usefull_methods.o task.o simulate.o
-	$(CC) simDM.o usefull_methods.o task.o -o simDM
+	$(CC) simDM.o usefull_methods.o task.o simulate.o -o simDM
 
 simDM.o: src/simDM.cpp
 	$(CC) $(CFLAGS) src/simDM.cpp

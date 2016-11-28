@@ -52,10 +52,6 @@ int main(int argc, char* argv[])
 				<< std::endl;
 		}
 
-		std::cout << "Total utilization: " << total_utilization(tasks) 
-			<< " over " << processors << " processors over the interval of " 
-			<< interval(tasks) << std::endl;
-
 		if (scheduling_type) {
 			simulate_global(tasks, processors);
 		} else {
