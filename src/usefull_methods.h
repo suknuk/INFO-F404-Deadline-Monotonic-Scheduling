@@ -31,4 +31,7 @@ int lcm(int a, int b);
 // Calculate the interval I = [0; max_offset + 2* hyper_period] -- p = lcm
 int interval(std::vector<Task> &tasks);
 
+// Simple output of the scheduling
+void display_scheduling(std::vector <std::vector<Task *> > &schedule);
+
 #endif

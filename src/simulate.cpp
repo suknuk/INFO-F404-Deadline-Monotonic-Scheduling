@@ -49,15 +49,32 @@ void simulate_global(std::vector<Task> &tasks, int processors)
 			
 			// Fill the processors from the left
 			for (int left = position; left < has_to_finish_at; left++){
-				for (scheduler_y = 0; scheduler_y < schedule.size(); scheduler_y++) {
+				for (unsigned scheduler_y = 0; scheduler_y < schedule.size(); scheduler_y++) {
 					// find emtpy slot
-
+					if ( NULL == schedule[scheduler_y][left]) {
+						// Store pointer of current task in the slot
+						schedule[scheduler_y][left] = &tasks[i];
+						wcet_to_fill -= 1;
+						break;
+					}
 					// TODO improvement? continue using the same processor to fill up
 					// places rather than looking from the top
 				}
+				if (wcet_to_fill == 0) {
+					break;
+				}
 			}
+			// if there are still wcet left -> unable to schedule the system
+			if (wcet_to_fill > 0) {	
+				std::cout << "System is unable to be scheduled on this system. Try again with " 
+					<< (processors + 1) << " processors." << std::endl;
+				return;
+			}			
+
 		}
 	}
+
+	display_scheduling(schedule);
 
 }
 

@@ -3,6 +3,7 @@
 #include <sstream>
 #include <fstream>
 #include <numeric>
+#include <iomanip>
 #include "usefull_methods.h"
 
 void show_usage(char* argv0)
@@ -120,6 +121,15 @@ int interval(std::vector<Task> &tasks)
 }
 
 
+void display_scheduling(std::vector <std::vector<Task *> > &schedule)
+{
+	for (unsigned y = 0; y < schedule.size(); y++) {
+		for (unsigned x = 0; x < schedule[y].size(); x++) {
+			std::cout << std::setw(10) << schedule[y][x];
+		}
+		std::cout << std::endl;
+	}
+}
 
 
 
