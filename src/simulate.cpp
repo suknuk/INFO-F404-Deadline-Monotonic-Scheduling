@@ -74,7 +74,7 @@ void simulate_global(std::vector<Task> &tasks, int processors)
 		}
 	}
 
-	display_scheduling(schedule);
+	display_scheduling(schedule, tasks);
 
 }
 

@@ -4,6 +4,7 @@
 #include <fstream>
 #include <numeric>
 #include <iomanip>
+#include <map>
 #include "usefull_methods.h"
 
 void show_usage(char* argv0)
@@ -121,11 +122,23 @@ int interval(std::vector<Task> &tasks)
 }
 
 
-void display_scheduling(std::vector <std::vector<Task *> > &schedule)
+void display_scheduling(std::vector <std::vector<Task *> > &schedule, std::vector<Task> &tasks)
 {
+	//map of all tasks in order
+	std::map<Task *, int> priority;
+
+	for (unsigned i = 0; i < tasks.size(); i++) {
+		priority[&tasks[i]] = i + 1;
+	}
+
 	for (unsigned y = 0; y < schedule.size(); y++) {
 		for (unsigned x = 0; x < schedule[y].size(); x++) {
-			std::cout << std::setw(10) << schedule[y][x];
+			if (NULL == schedule[y][x]) {
+				std::cout << std::setw(3) << "_";
+			} else {
+				// print priority of task
+				std::cout << std::setw(3) << priority.at(schedule[y][x]);
+			}
 		}
 		std::cout << std::endl;
 	}
