@@ -4,37 +4,57 @@
 #include <cmath>
 #include "simulate.h"
 
-void simulate_global(std::vector<Task> &tasks, int processors)
+void initialize_global_schedule(std::vector< std::vector<Task *> > &schedule, 
+	int processors, int study_interval)
 {
-	// #processors enough for total utilisation?
-	double utilization = total_utilization(tasks);
-	int utilization_int = ceil(utilization);
-
-	std::cout << "Total utilization of the system is " << utilization << std::endl;
-	
-	// System can not be scheduled with the #processors
-	if (utilization > (double)processors) {
-		std::cout << "System is unable to be scheduled on this system. For"
-			<< " the simulation of the system, we require at least " 
-			<< utilization_int << " processors instead of " << processors
-			<< std::endl;
-		return;
-	}
-
-	int study_interval = interval(tasks);
-	std::cout << "Simulating over the interval of " << study_interval << std::endl;
-	
-	// vector of vectors to hold the scheduling of the system
-	std::vector< std::vector<Task *> > schedule;
-	
-	// create n processor vectors which represent 1 processor each
 	for (int i = 0; i < processors; i++) {
 		schedule.push_back(std::vector<Task *>());
 		for (int j = 0; j < study_interval; j++) {
 			schedule[i].push_back(NULL);	
 		}
 	}
+}
 
+void simulate_global(std::vector<Task> &tasks, int processors)
+{
+	// #processors enough for total utilisation?
+	double utilization = total_utilization(tasks);
+	
+	int study_interval = interval(tasks);
+	
+	// vector of vectors to hold the scheduling of the system
+	std::vector< std::vector<Task *> > schedule;
+	
+	// create n processor vectors which represent 1 processor each
+	initialize_global_schedule(schedule, processors, study_interval);
+
+	std::cout << "Total utilization of the system is " << utilization << std::endl;	
+	// System can not be scheduled with the #processors
+	if (utilization > (double)processors) {
+		std::cout << "System is unable to be scheduled on this system with "
+			<< processors << " processors. Determining the required number."
+			<< std::endl;
+		// setting processors to the minimum required number
+		processors = ceil(utilization);
+	// Otherwise, try the system specified by the user
+	} else {
+		if(do_simulate_global(tasks, processors, study_interval, schedule)) {
+			display_scheduling(schedule, tasks);	
+		} else {
+			std::cout << "System not schedulable with " << processors 
+				<< " processors. Determining the required number." 
+				<< std::endl;
+			//TODO hier weiter - loop bis do_simulate = true
+		}
+	}
+
+}
+
+
+
+bool do_simulate_global(std::vector<Task> &tasks, int processors, int study_interval, 
+	std::vector< std::vector<Task *> > &schedule)
+{
 	// Iterating every task by priority 
 	for (unsigned i = 0; i < tasks.size(); i++) {
 		// Iterating every period of the task starting at the offset
@@ -79,13 +99,21 @@ void simulate_global(std::vector<Task> &tasks, int processors)
 			if (wcet_to_fill > 0) {	
 				std::cout << "System is unable to be scheduled on this system. Try again with " 
 					<< (processors + 1) << " processors." << std::endl;
-				return;
+				return false;
 			}			
 
 		}
 	}
+	return true;
+	// displaying the schedule on the terminal
+	//display_scheduling(schedule, tasks);
+}
 
-	display_scheduling(schedule, tasks);
+
+void simulate_partitioned(std::vector<Task> &tasks, int processors)
+{
+
+	std::cout << "I'm crying" << std::endl;
 
 }
 

@@ -55,7 +55,7 @@ int main(int argc, char* argv[])
 		if (scheduling_type) {
 			simulate_global(tasks, processors);
 		} else {
-			// Simulate partitioned
+			simulate_partitioned(tasks, processors);
 		}
 		
 		return 0;
