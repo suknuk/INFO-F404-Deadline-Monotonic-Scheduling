@@ -55,10 +55,21 @@ void simulate_global(std::vector<Task> &tasks, int processors)
 						// Store pointer of current task in the slot
 						schedule[scheduler_y][left] = &tasks[i];
 						wcet_to_fill -= 1;
+						/*
+						----- This may be stupid to do? ---------- 
+						*/
+						// Left look ahead on the current processor for empty spots
+						for (;wcet_to_fill > 0 && 			// There are still wcet to fill
+							left + 1 < has_to_finish_at &&		// We are before the deadline
+							NULL == schedule[scheduler_y][left+1];)	// There is a spot free on the right
+						
+						{
+							schedule[scheduler_y][left+1] = &tasks[i];
+							wcet_to_fill--;
+							left++;
+						}
 						break;
 					}
-					// TODO improvement? continue using the same processor to fill up
-					// places rather than looking from the top
 				}
 				if (wcet_to_fill == 0) {
 					break;
