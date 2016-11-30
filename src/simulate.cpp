@@ -45,7 +45,8 @@ void simulate_global(std::vector<Task> &tasks, int processors)
 	// create n processor vectors which represent 1 processor each
 	initialize_global_schedule(schedule, processors, study_interval);
 
-	std::cout << "Total utilization of the system is " << utilization << std::endl;	
+	std::cout << "Total utilization of the system is " << utilization << std::endl
+		<< "Study interval of the system is " << study_interval << std::endl;	
 	// System can not be scheduled with the #processors
 	if (utilization > (double)processors || !do_simulate_global(tasks, processors, study_interval, schedule)) {
 		std::cout << "System is unable to be scheduled on this system with "
@@ -73,12 +74,7 @@ void simulate_global(std::vector<Task> &tasks, int processors)
 			}
 		}	
 	} 
-	
-	// Show valid schedule of the system
-
 }
-
-
 
 bool do_simulate_global(std::vector<Task> &tasks, int processors, int study_interval, 
 	std::vector< std::vector<Task *> > &schedule)
@@ -119,30 +115,25 @@ bool do_simulate_global(std::vector<Task> &tasks, int processors, int study_inte
 						break;
 					}
 				}
+				// no more slots to fill -> next period
 				if (wcet_to_fill == 0) {
 					break;
 				}
 			}
 			// if there are still wcet left -> unable to schedule the system
 			if (wcet_to_fill > 0) {	
-				std::cout << "System is unable to be scheduled on this system. Try again with " 
-					<< (processors + 1) << " processors." << std::endl;
 				return false;
 			}			
-
 		}
 	}
+	// System is schedulable
 	return true;
-	// displaying the schedule on the terminal
-	//display_scheduling(schedule, tasks);
 }
 
 
 void simulate_partitioned(std::vector<Task> &tasks, int processors)
 {
-
 	std::cout << "I'm crying" << std::endl;
-
 }
 
 
