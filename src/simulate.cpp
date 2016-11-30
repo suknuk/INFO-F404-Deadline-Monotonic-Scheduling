@@ -7,12 +7,29 @@
 void initialize_global_schedule(std::vector< std::vector<Task *> > &schedule, 
 	int processors, int study_interval)
 {
+	schedule.clear();
 	for (int i = 0; i < processors; i++) {
 		schedule.push_back(std::vector<Task *>());
 		for (int j = 0; j < study_interval; j++) {
 			schedule[i].push_back(NULL);	
 		}
 	}
+}
+
+int minimul_processors_required(std::vector<Task> &tasks, std::vector< std::vector<Task*> > &schedule,
+	int processors, int study_interval)
+{
+	// we have to reset the schedule vector as it has data in it and processors could be changed
+	initialize_global_schedule(schedule, processors, study_interval);
+	
+	// Iterate until system is schedulable with the given processors
+	while(false == do_simulate_global(tasks, processors, study_interval, schedule))
+	{
+		std::cout << processors << std::endl;
+		processors+=1;
+		initialize_global_schedule(schedule, processors, study_interval);
+	}
+	return processors;
 }
 
 void simulate_global(std::vector<Task> &tasks, int processors)
@@ -30,23 +47,34 @@ void simulate_global(std::vector<Task> &tasks, int processors)
 
 	std::cout << "Total utilization of the system is " << utilization << std::endl;	
 	// System can not be scheduled with the #processors
-	if (utilization > (double)processors) {
+	if (utilization > (double)processors || !do_simulate_global(tasks, processors, study_interval, schedule)) {
 		std::cout << "System is unable to be scheduled on this system with "
 			<< processors << " processors. Determining the required number."
 			<< std::endl;
-		// setting processors to the minimum required number
-		processors = ceil(utilization);
-	// Otherwise, try the system specified by the user
-	} else {
-		if(do_simulate_global(tasks, processors, study_interval, schedule)) {
-			display_scheduling(schedule, tasks);	
-		} else {
-			std::cout << "System not schedulable with " << processors 
-				<< " processors. Determining the required number." 
-				<< std::endl;
-			//TODO hier weiter - loop bis do_simulate = true
+		// setting processors to the minimum required number -> has to be at least the #utilization
+		if (processors < ceil(utilization)) {
+			processors = ceil(utilization);
 		}
-	}
+		// find min. required processors
+		processors = minimul_processors_required(tasks, schedule, processors, study_interval);
+		std::cout << "Number of processors required : " << processors << std::endl;
+		display_scheduling(schedule, tasks);	
+
+	} else {
+		// System can be scheduled
+		display_scheduling(schedule, tasks);
+		// possible that we can schedule it with fewer tasks?
+		if (processors > ceil(utilization)) {
+			// we look between ceil(utilization) and processors
+			int min_processors = minimul_processors_required(tasks, schedule, ceil(utilization), study_interval);
+			if (min_processors < processors){
+				std::cout << "System could have been scheduled with " << min_processors << " processors."
+					<< std::endl;
+			}
+		}	
+	} 
+	
+	// Show valid schedule of the system
 
 }
 
