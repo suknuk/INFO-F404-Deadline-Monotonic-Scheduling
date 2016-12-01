@@ -1,5 +1,5 @@
-#ifndef SIMULATE_H
-#define SIMULATE_H
+#ifndef SIMULATE_GLOBAL_H
+#define SIMULATE_GLOBAL_H
 
 #include <vector>
 #include "task.h"
@@ -9,7 +9,7 @@ void initialize_global_schedule(std::vector< std::vector<Task*> > &schedule,
 	int processors, int study_interval);
 
 // Calculating the minimul # of required processors
-int minimul_processors_required(std::vector<Task> &tasks, std::vector< std::vector<Task*> > &schedule,
+int minimul_global_processors_required(std::vector<Task> &tasks, std::vector< std::vector<Task*> > &schedule,
 	int processors, int study_interval);
 
 // Calling the simulation for the processors required

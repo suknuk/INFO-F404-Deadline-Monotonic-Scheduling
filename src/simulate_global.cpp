@@ -2,7 +2,7 @@
 #include "usefull_methods.h"
 #include <iostream>
 #include <cmath>
-#include "simulate.h"
+#include "simulate_global.h"
 
 void initialize_global_schedule(std::vector< std::vector<Task *> > &schedule, 
 	int processors, int study_interval)
@@ -16,7 +16,7 @@ void initialize_global_schedule(std::vector< std::vector<Task *> > &schedule,
 	}
 }
 
-int minimul_processors_required(std::vector<Task> &tasks, std::vector< std::vector<Task*> > &schedule,
+int minimul_global_processors_required(std::vector<Task> &tasks, std::vector< std::vector<Task*> > &schedule,
 	int processors, int study_interval)
 {
 	// we have to reset the schedule vector as it has data in it and processors could be changed
@@ -57,7 +57,7 @@ void simulate_global(std::vector<Task> &tasks, int processors)
 			processors = ceil(utilization);
 		}
 		// find min. required processors
-		processors = minimul_processors_required(tasks, schedule, processors, study_interval);
+		processors = minimul_global_processors_required(tasks, schedule, processors, study_interval);
 		std::cout << "Number of processors required : " << processors << std::endl;
 		display_scheduling(schedule, tasks);	
 
@@ -67,7 +67,7 @@ void simulate_global(std::vector<Task> &tasks, int processors)
 		// possible that we can schedule it with fewer tasks?
 		if (processors > ceil(utilization)) {
 			// we look between ceil(utilization) and processors
-			int min_processors = minimul_processors_required(tasks, schedule, ceil(utilization), study_interval);
+			int min_processors = minimul_global_processors_required(tasks, schedule, ceil(utilization), study_interval);
 			if (min_processors < processors){
 				std::cout << "System could have been scheduled with " << min_processors << " processors."
 					<< std::endl;
@@ -129,14 +129,3 @@ bool do_simulate_global(std::vector<Task> &tasks, int processors, int study_inte
 	// System is schedulable
 	return true;
 }
-
-
-void simulate_partitioned(std::vector<Task> &tasks, int processors)
-{
-	std::cout << "I'm crying" << std::endl;
-}
-
-
-
-
-
