@@ -5,7 +5,7 @@
 #include <vector>
 #include <algorithm>
 #include "simulate_global.h"
-//#include "simulate_partitioned.h"
+#include "simulate_partitioned.h"
 
 int main(int argc, char* argv[])
 {
@@ -56,7 +56,7 @@ int main(int argc, char* argv[])
 		if (scheduling_type) {
 			simulate_global(tasks, processors);
 		} else {
-		//	simulate_partitioned(tasks, processors);
+			simulate_partitioned(tasks, processors);
 		}
 		
 		return 0;

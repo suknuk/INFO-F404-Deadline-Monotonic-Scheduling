@@ -80,7 +80,7 @@ std::vector<Task> read_tasks_file(char* file_name)
 
 double total_utilization(std::vector<Task> &tasks)
 {
-	double total_utilization;
+	double total_utilization = 0;
 			
 	for (unsigned i = 0; i < tasks.size(); i++) {
 		total_utilization += tasks[i].calculate_utilization();
