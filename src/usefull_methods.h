@@ -2,6 +2,7 @@
 #define USEFULL_METHODS_H
 
 #include <vector>
+#include <map>
 #include "task.h"
 
 // Displaying text on how to use the program
@@ -30,6 +31,9 @@ int lcm(int a, int b);
 
 // Calculate the interval I = [0; max_offset + 2* hyper_period] -- p = lcm
 int interval(std::vector<Task> &tasks);
+
+// displaying tasks information
+void display_tasks(std::vector<Task> &tasks, std::map<Task *, int> &priority);
 
 // Simple output of the scheduling
 void display_scheduling(std::vector <std::vector<Task *> > &schedule, std::vector<Task> &tasks);

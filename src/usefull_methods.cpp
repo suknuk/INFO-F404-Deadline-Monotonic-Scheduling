@@ -4,7 +4,6 @@
 #include <fstream>
 #include <numeric>
 #include <iomanip>
-#include <map>
 #include "usefull_methods.h"
 
 void show_usage(char* argv0)
@@ -119,6 +118,27 @@ int interval(std::vector<Task> &tasks)
 	}
 
 	return max_offset + 2 * period;
+}
+
+void display_tasks(std::vector<Task> &tasks, std::map<Task *, int> &priority)
+{
+	std::cout << std::setw(3) << "UID"
+		<< std::setw(10)  << "Offset"
+		<< std::setw(10)  << "Period"
+		<< std::setw(12) << "Deadline"
+		<< std::setw(8)  << "WCET"
+		<< std::setw(15) << "Utilization"
+		<< std::endl;
+
+	for (unsigned i = 0; i < tasks.size(); i++) {
+		std::cout << std::setw(3) << priority.at(&tasks[i])
+			<< std::setw(10)  << tasks[i].get_offset()
+			<< std::setw(10)  << tasks[i].get_period()
+			<< std::setw(12) << tasks[i].get_deadline()
+			<< std::setw(8)  << tasks[i].get_wcet()
+			<< std::setw(15) << tasks[i].calculate_utilization()
+			<< std::endl;
+	}
 }
 
 

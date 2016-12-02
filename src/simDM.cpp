@@ -7,6 +7,8 @@
 #include "simulate_global.h"
 #include "simulate_partitioned.h"
 #include "prioritySort.h"
+#include <map>
+#include <iomanip>
 
 int main(int argc, char* argv[])
 {
@@ -41,18 +43,16 @@ int main(int argc, char* argv[])
 
 		// getting vector of tasks
 		std::vector<Task> tasks = read_tasks_file(argv[2]);
-		std::sort(tasks.begin(), tasks.end(), deadlinePriority);
-
-		std::cout << "Offset\t\tPeriod\t\tDeadline\tWCET\t\tUtilization" << std::endl;
-
+		//std::sort(tasks.begin(), tasks.end(), deadlinePriority);
+		
+		//map of all tasks in order from 1 to n
+		std::map<Task *, int> priority;
 		for (unsigned i = 0; i < tasks.size(); i++) {
-			std::cout << tasks[i].get_offset() << "\t\t" 
-				<< tasks[i].get_period() << "\t\t" 
-				<< tasks[i].get_deadline() << "\t\t" 
-				<< tasks[i].get_wcet() << "\t\t"
-				<< tasks[i].calculate_utilization()
-				<< std::endl;
+			priority[&tasks[i]] = i + 1;
 		}
+
+		// show tasks information to the user
+		display_tasks(tasks, priority);	
 
 		if (scheduling_type) {
 			simulate_global(tasks, processors);
