@@ -13,6 +13,7 @@ bool UniprocessorDM::simulate_system(std::vector<Task> &tasks)
 
 	return true;	
 }
+
 bool UniprocessorDM::can_add_task(Task &task)
 {
 	if (this->_tasks.empty()) {

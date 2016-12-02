@@ -6,14 +6,15 @@
 
 void simulate_partitioned(std::vector<Task> &tasks, int processors)
 {
-	std::cout << "hello" << std::endl;
-	UniprocessorDM p1;
-	//std::cout << p1.can_add_task(tasks[0]) << std::endl;
+	UniprocessorDM schedule[processors];
 	
-	p1.add_task(tasks[0]);
-	p1.add_task(tasks[1]);
+	schedule[0].can_add_task(tasks[0]);	
+	schedule[0].can_add_task(tasks[0]);
+
+	schedule[0].add_task(tasks[0]);
+	schedule[0].add_task(tasks[1]);
 	
-	p1.add_task(tasks[2]);
+	schedule[0].add_task(tasks[2]);
 	
-	std::cout << p1.get_total_utilization() << std::endl;
+	std::cout << schedule[0].get_total_utilization() << std::endl;
 }

@@ -3,8 +3,8 @@ CFLAGS = -c -Wall -Wextra
 
 all: simDM
 
-simDM: simDM.o usefull_methods.o task.o simulate_global.o simulate_partitioned.o uniprocessorDM.o
-	$(CC) simDM.o usefull_methods.o task.o simulate_global.o simulate_partitioned.o uniprocessorDM.o -o simDM
+simDM: simDM.o usefull_methods.o task.o simulate_global.o simulate_partitioned.o uniprocessorDM.o prioritySort.o
+	$(CC) simDM.o usefull_methods.o task.o simulate_global.o simulate_partitioned.o uniprocessorDM.o prioritySort.o -o simDM
 
 simDM.o: src/simDM.cpp
 	$(CC) $(CFLAGS) src/simDM.cpp
@@ -23,6 +23,9 @@ uniprocessorDM.o: src/uniprocessorDM.cpp
 
 simulate_partitioned.o: src/simulate_partitioned.cpp
 	$(CC) $(CFLAGS) src/simulate_partitioned.cpp
+
+prioritySort.o: src/prioritySort.cpp
+	$(CC) $(CFLAGS) src/prioritySort.cpp
 
 clean: 
 	rm *.o simDM

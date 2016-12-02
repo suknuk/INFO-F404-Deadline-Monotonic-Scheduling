@@ -6,6 +6,7 @@
 #include <algorithm>
 #include "simulate_global.h"
 #include "simulate_partitioned.h"
+#include "prioritySort.h"
 
 int main(int argc, char* argv[])
 {
@@ -40,7 +41,7 @@ int main(int argc, char* argv[])
 
 		// getting vector of tasks
 		std::vector<Task> tasks = read_tasks_file(argv[2]);
-		std::sort(tasks.begin(), tasks.end());
+		std::sort(tasks.begin(), tasks.end(), deadlinePriority);
 
 		std::cout << "Offset\t\tPeriod\t\tDeadline\tWCET\t\tUtilization" << std::endl;
 
