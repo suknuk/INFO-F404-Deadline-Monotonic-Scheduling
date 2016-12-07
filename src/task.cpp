@@ -1,6 +1,8 @@
 #include "task.h"
 #include <stdexcept>
 
+int UID_counter = 1; 
+
 Task::Task (int offset, int period, int deadline, int wcet)
 {
 	// We only consider constrained deadlines, so we do a check
@@ -11,6 +13,7 @@ Task::Task (int offset, int period, int deadline, int wcet)
 	this->period = period;
 	this->deadline = deadline;
 	this->wcet = wcet;
+	this->uid = UID_counter++;
 }
 
 double Task::calculate_utilization() const
@@ -36,6 +39,11 @@ int Task::get_deadline() const
 int Task::get_wcet() const
 {
 	return this->wcet;
+}
+
+int Task::get_uid() const
+{
+	return this->uid;
 }
 
 bool operator<(const Task &t1, const Task &t2)

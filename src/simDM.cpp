@@ -43,16 +43,9 @@ int main(int argc, char* argv[])
 
 		// getting vector of tasks
 		std::vector<Task> tasks = read_tasks_file(argv[2]);
-		//std::sort(tasks.begin(), tasks.end(), deadlinePriority);
-		
-		//map of all tasks in order from 1 to n
-		std::map<Task *, int> priority;
-		for (unsigned i = 0; i < tasks.size(); i++) {
-			priority[&tasks[i]] = i + 1;
-		}
 
 		// show tasks information to the user
-		display_tasks(tasks, priority);	
+		display_tasks(tasks);	
 
 		if (scheduling_type) {
 			simulate_global(tasks, processors);

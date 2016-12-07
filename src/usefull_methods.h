@@ -33,7 +33,7 @@ int lcm(int a, int b);
 int interval(std::vector<Task> &tasks);
 
 // displaying tasks information
-void display_tasks(std::vector<Task> &tasks, std::map<Task *, int> &priority);
+void display_tasks(std::vector<Task> &tasks);
 
 // Simple output of the scheduling
 void display_scheduling(std::vector <std::vector<Task *> > &schedule, std::vector<Task> &tasks);

@@ -1,10 +1,12 @@
 #ifndef TASK_H 
 #define TASK_H
 
+extern int UID_counter;
+
 class Task 
 {
 private:
-	int offset, period, deadline, wcet, priority;
+	int offset, period, deadline, wcet, priority, uid;
 public:
 	Task(int,int,int,int);
 	double calculate_utilization() const;
@@ -14,6 +16,7 @@ public:
 	int get_period() const;
 	int get_deadline() const;
 	int get_wcet() const;
+	int get_uid() const;
 
 };
 

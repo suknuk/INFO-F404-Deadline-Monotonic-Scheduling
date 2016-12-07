@@ -2,6 +2,8 @@
 #include "usefull_methods.h"
 #include <iostream>
 #include <cmath>
+#include <algorithm>
+#include "prioritySort.h"
 #include "simulate_global.h"
 
 void initialize_global_schedule(std::vector< std::vector<Task *> > &schedule, 
@@ -34,6 +36,9 @@ int minimul_global_processors_required(std::vector<Task> &tasks, std::vector< st
 
 void simulate_global(std::vector<Task> &tasks, int processors)
 {
+	//Sorting the tasks according to their deadline
+	std::sort(tasks.begin(), tasks.end(), deadlinePriority);
+	
 	// #processors enough for total utilisation?
 	double utilization = total_utilization(tasks);
 	

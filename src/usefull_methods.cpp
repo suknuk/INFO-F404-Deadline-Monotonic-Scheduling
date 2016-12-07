@@ -120,7 +120,7 @@ int interval(std::vector<Task> &tasks)
 	return max_offset + 2 * period;
 }
 
-void display_tasks(std::vector<Task> &tasks, std::map<Task *, int> &priority)
+void display_tasks(std::vector<Task> &tasks)
 {
 	std::cout << std::setw(3) << "UID"
 		<< std::setw(10)  << "Offset"
@@ -131,7 +131,7 @@ void display_tasks(std::vector<Task> &tasks, std::map<Task *, int> &priority)
 		<< std::endl;
 
 	for (unsigned i = 0; i < tasks.size(); i++) {
-		std::cout << std::setw(3) << priority.at(&tasks[i])
+		std::cout << std::setw(3) << tasks[i].get_uid()
 			<< std::setw(10)  << tasks[i].get_offset()
 			<< std::setw(10)  << tasks[i].get_period()
 			<< std::setw(12) << tasks[i].get_deadline()
@@ -144,20 +144,13 @@ void display_tasks(std::vector<Task> &tasks, std::map<Task *, int> &priority)
 
 void display_scheduling(std::vector <std::vector<Task *> > &schedule, std::vector<Task> &tasks)
 {
-	//map of all tasks in order
-	std::map<Task *, int> priority;
-
-	for (unsigned i = 0; i < tasks.size(); i++) {
-		priority[&tasks[i]] = i + 1;
-	}
-
 	for (unsigned y = 0; y < schedule.size(); y++) {
 		for (unsigned x = 0; x < schedule[y].size(); x++) {
 			if (NULL == schedule[y][x]) {
 				std::cout << std::setw(3) << "_";
 			} else {
 				// print priority of task
-				std::cout << std::setw(3) << priority.at(schedule[y][x]);
+				std::cout << std::setw(3) << schedule[y][x]->get_uid();//priority.at(schedule[y][x]);
 			}
 		}
 		std::cout << std::endl;
