@@ -26,7 +26,7 @@ int minimul_global_processors_required(std::vector<Task> &tasks, std::vector< st
 	initialize_global_schedule(schedule, processors, study_interval);
 	
 	// Iterate until system is schedulable with the given processors
-	while(false == do_simulate_global(tasks, processors, study_interval, schedule))
+	while(false == do_simulate_global(tasks, study_interval, schedule))
 	{
 		std::cout << processors << std::endl;
 		processors += 1;
@@ -54,7 +54,7 @@ std::vector <std::vector<Task*> > simulate_global(std::vector<Task> &tasks, int 
 	std::cout << "Total utilization of the system is " << utilization << std::endl
 		<< "Study interval of the system is " << study_interval << std::endl;	
 	// System can not be scheduled with the #processors
-	if (utilization > (double)processors || !do_simulate_global(tasks, processors, study_interval, schedule)) {
+	if (utilization > (double)processors || !do_simulate_global(tasks,  study_interval, schedule)) {
 		std::cout << "System is unable to be scheduled on this system with "
 			<< processors << " processors. Determining the required number."
 			<< std::endl;
@@ -82,7 +82,7 @@ std::vector <std::vector<Task*> > simulate_global(std::vector<Task> &tasks, int 
 	return schedule;
 }
 
-bool do_simulate_global(std::vector<Task> &tasks, int processors, int study_interval, 
+bool do_simulate_global(std::vector<Task> &tasks, int study_interval, 
 	std::vector< std::vector<Task *> > &schedule)
 {
 	// Iterating every task by priority 
