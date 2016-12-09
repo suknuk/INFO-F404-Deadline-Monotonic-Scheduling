@@ -1,25 +1,31 @@
 #include <iostream>
-#include <vector>
 #include <algorithm>
-#include "task.h"
 #include "prioritySort.h"
 #include "uniprocessorDM.h"
+#include "usefull_methods.h"
 #include "simulate_partitioned.h"
 
+//std::vector< std::vector<Task*> > 
+//std::vector <std::vector<Task*> >
 void simulate_partitioned(std::vector<Task> &tasks, int processors)
 {
 	// Sort tasks by utilization for 'bin fitting'
 	std::sort(tasks.begin(), tasks.end(), utilizationPriority);
+	for (unsigned i = 0; i < tasks.size(); i++)
+	{
+		std::cout << tasks[i].get_uid() << std::endl;
+	}
 	
-	UniprocessorDM schedule[processors];
-	
-	schedule[0].can_add_task(tasks[0]);	
-	schedule[0].can_add_task(tasks[0]);
+	std::vector<Task*> single_schedule;
 
-	schedule[0].add_task(tasks[0]);
-	schedule[0].add_task(tasks[1]);
+	UniprocessorDM proc[1];
 	
-	schedule[0].add_task(tasks[2]);
-	
-	std::cout << schedule[0].get_total_utilization() << std::endl;
+	proc[0].add_task(tasks[0]);
+	single_schedule = proc[0].get_schedule();		
+	std::vector< std::vector<Task*> > schedule;
+	schedule.push_back(single_schedule);
+	display_scheduling(schedule);
+//	return schedule;
 }
+
+

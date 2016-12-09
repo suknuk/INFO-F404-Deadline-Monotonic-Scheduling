@@ -9,7 +9,9 @@ class UniprocessorDM
 private:
 	std::vector<Task> _tasks;
 
+	// simulating the system and informs of failure/success
 	bool simulate_system(std::vector<Task> &tasks);
+	bool simulate_system(std::vector<Task> &tasks, std::vector<Task*> &schedule);
 public:
 	// checking if a task can be added
 	bool can_add_task(Task &task);
