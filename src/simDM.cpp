@@ -47,8 +47,11 @@ int main(int argc, char* argv[])
 		// show tasks information to the user
 		display_tasks(tasks);	
 
+		std::vector <std::vector<Task *> > schedule;
+
 		if (scheduling_type) {
-			simulate_global(tasks, processors);
+			schedule = simulate_global(tasks, processors);
+			display_scheduling(schedule, tasks);	
 		} else {
 			simulate_partitioned(tasks, processors);
 		}

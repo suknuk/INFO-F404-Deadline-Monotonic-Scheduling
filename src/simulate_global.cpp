@@ -19,7 +19,7 @@ void initialize_global_schedule(std::vector< std::vector<Task *> > &schedule,
 	}
 }
 
-int minimul_global_processors_required(std::vector<Task> &tasks, std::vector< std::vector<Task*> > &schedule,
+int minimul_global_processors_required(std::vector<Task> &tasks, std::vector< std::vector<Task*> > &schedule, 
 	int processors, int study_interval)
 {
 	// we have to reset the schedule vector as it has data in it and processors could be changed
@@ -29,13 +29,13 @@ int minimul_global_processors_required(std::vector<Task> &tasks, std::vector< st
 	while(false == do_simulate_global(tasks, processors, study_interval, schedule))
 	{
 		std::cout << processors << std::endl;
-		processors+=1;
+		processors += 1;
 		initialize_global_schedule(schedule, processors, study_interval);
 	}
 	return processors;
 }
 
-void simulate_global(std::vector<Task> &tasks, int processors)
+std::vector <std::vector<Task*> > simulate_global(std::vector<Task> &tasks, int processors)
 {
 	//Sorting the tasks according to their deadline
 	std::sort(tasks.begin(), tasks.end(), deadlinePriority);
@@ -65,22 +65,20 @@ void simulate_global(std::vector<Task> &tasks, int processors)
 		// find min. required processors
 		processors = minimul_global_processors_required(tasks, schedule, processors, study_interval);
 		std::cout << "Number of processors required : " << processors << std::endl;
-		display_scheduling(schedule, tasks);	
-
 	} else {
 		// System can be scheduled
-		display_scheduling(schedule, tasks);
 		// possible that we can schedule it with fewer tasks?
 		if (processors > ceil(utilization)) {
 			// we look between ceil(utilization) and processors
-			int min_processors = minimul_global_processors_required(tasks, schedule, ceil(utilization), study_interval);
+			std::vector <std::vector<Task*> > schedule_tmp;
+			int min_processors = minimul_global_processors_required(tasks, schedule_tmp, ceil(utilization), study_interval);
 			if (min_processors < processors){
 				std::cout << "System could have been scheduled with " << min_processors << " processors."
 					<< std::endl;
 			}
 		}	
 	}
-	do_pretty_output(schedule); 
+	return schedule;
 }
 
 bool do_simulate_global(std::vector<Task> &tasks, int processors, int study_interval, 
