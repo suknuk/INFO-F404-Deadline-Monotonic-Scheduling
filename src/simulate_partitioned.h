@@ -4,7 +4,8 @@
 #include <vector>
 #include "task.h"
 
-//std::vector <std::vector<Task*> >
-void simulate_partitioned(std::vector<Task> &tasks, int processors);
+std::vector <std::vector<Task*> > simulate_partitioned(std::vector<Task> &tasks, int processors);
+
+bool do_simulate_partitioned(std::vector<Task> &tasks, int processors, std::vector<UniprocessorDM> &schedule);
 
 #endif

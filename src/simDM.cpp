@@ -52,7 +52,7 @@ int main(int argc, char* argv[])
 		if (scheduling_type) {
 			schedule = simulate_global(tasks, processors);
 		} else {
-			simulate_partitioned(tasks, processors);
+			schedule = simulate_partitioned(tasks, processors);
 		}
 		
 		display_scheduling(schedule);	

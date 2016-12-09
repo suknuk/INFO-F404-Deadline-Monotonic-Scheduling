@@ -40,7 +40,6 @@ std::vector <std::vector<Task*> > simulate_global(std::vector<Task> &tasks, int 
 	//Sorting the tasks according to their deadline
 	std::sort(tasks.begin(), tasks.end(), deadlinePriority);
 	
-	// #processors enough for total utilisation?
 	double utilization = total_utilization(tasks);
 	
 	int study_interval = interval(tasks);

@@ -61,12 +61,13 @@ bool UniprocessorDM::can_add_task(Task &task)
 	}
 	std::vector<Task> tmp_tasks = this->_tasks;
 	tmp_tasks.push_back(task);
+
 	// system of utilization larger than 1 is impossible of being scheduled
 	if (total_utilization(tmp_tasks) > 1) {
 		return false;
 	}
 	// TODO: check Utilization of ln2 with the proof of the slides
-	return false;//(simulate_system(tmp_tasks));	
+	return (simulate_system(tmp_tasks));	
 }
 
 void UniprocessorDM::add_task(Task &task)

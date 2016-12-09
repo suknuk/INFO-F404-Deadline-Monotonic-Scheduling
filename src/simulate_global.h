@@ -19,7 +19,4 @@ std::vector <std::vector<Task*> > simulate_global(std::vector<Task> &tasks, int 
 bool do_simulate_global(std::vector<Task> &tasks, int study_interval,
 	std::vector< std::vector<Task*> > &schedule);
 
-// Simulating using the partitioned strategy
-void simulate_partitioned(std::vector<Task> &tasks, int processors);
-
 #endif
