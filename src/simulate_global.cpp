@@ -4,6 +4,7 @@
 #include <cmath>
 #include <algorithm>
 #include "prioritySort.h"
+#include "pretty_output.h"
 #include "simulate_global.h"
 
 void initialize_global_schedule(std::vector< std::vector<Task *> > &schedule, 
@@ -78,7 +79,8 @@ void simulate_global(std::vector<Task> &tasks, int processors)
 					<< std::endl;
 			}
 		}	
-	} 
+	}
+	do_pretty_output(schedule); 
 }
 
 bool do_simulate_global(std::vector<Task> &tasks, int processors, int study_interval, 
