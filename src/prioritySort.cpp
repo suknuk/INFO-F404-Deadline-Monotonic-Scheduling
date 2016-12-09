@@ -33,9 +33,9 @@ bool deadlinePriority(const Task &t1, const Task &t2)
 bool utilizationPriority(const Task &t1, const Task &t2)
 {
 	// sort by utilization first as it is DM
-	if (t1.calculate_utilization() < t2.calculate_utilization()){
+	if (t1.calculate_utilization() > t2.calculate_utilization()){
 		return true;
-	} else if (t1.calculate_utilization() > t2.calculate_utilization()) {
+	} else if (t1.calculate_utilization() < t2.calculate_utilization()) {
 		return false;
 	// ow utilizations are equal
 	} else {
