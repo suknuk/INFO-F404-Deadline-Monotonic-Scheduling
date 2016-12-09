@@ -1,14 +1,14 @@
 #include <iostream>
 #include <string>
-#include "usefull_methods.h"
-#include "task.h"
 #include <vector>
 #include <algorithm>
+#include <map>
+#include <iomanip>
+#include "usefull_methods.h"
+#include "task.h"
 #include "simulate_global.h"
 #include "simulate_partitioned.h"
 #include "prioritySort.h"
-#include <map>
-#include <iomanip>
 
 int main(int argc, char* argv[])
 {

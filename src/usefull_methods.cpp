@@ -144,7 +144,7 @@ void display_tasks(std::vector<Task> &tasks)
 
 void display_scheduling(std::vector <std::vector<Task *> > &schedule)
 {
-	for (unsigned processor_nr = 0; processor_nr < schedule.size(); y++) {
+	for (unsigned processor_nr = 0; processor_nr < schedule.size(); processor_nr++) {
 		for (unsigned x = 0; x < schedule[processor_nr].size(); x++) {
 			if (NULL == schedule[processor_nr][x]) {
 				std::cout << std::setw(3) << "_";
