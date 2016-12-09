@@ -1,11 +1,16 @@
 #include <iostream>
-#include "task.h"
 #include <vector>
+#include <algorithm>
+#include "task.h"
+#include "prioritySort.h"
 #include "uniprocessorDM.h"
 #include "simulate_partitioned.h"
 
 void simulate_partitioned(std::vector<Task> &tasks, int processors)
 {
+	// Sort tasks by utilization for 'bin fitting'
+	std::sort(tasks.begin(), tasks.end(), utilizationPriority);
+	
 	UniprocessorDM schedule[processors];
 	
 	schedule[0].can_add_task(tasks[0]);	

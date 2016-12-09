@@ -142,15 +142,15 @@ void display_tasks(std::vector<Task> &tasks)
 }
 
 
-void display_scheduling(std::vector <std::vector<Task *> > &schedule, std::vector<Task> &tasks)
+void display_scheduling(std::vector <std::vector<Task *> > &schedule)
 {
-	for (unsigned y = 0; y < schedule.size(); y++) {
-		for (unsigned x = 0; x < schedule[y].size(); x++) {
-			if (NULL == schedule[y][x]) {
+	for (unsigned processor_nr = 0; processor_nr < schedule.size(); y++) {
+		for (unsigned x = 0; x < schedule[processor_nr].size(); x++) {
+			if (NULL == schedule[processor_nr][x]) {
 				std::cout << std::setw(3) << "_";
 			} else {
-				// print priority of task
-				std::cout << std::setw(3) << schedule[y][x]->get_uid();//priority.at(schedule[y][x]);
+				// print ID of task
+				std::cout << std::setw(3) << schedule[processor_nr][x]->get_uid();
 			}
 		}
 		std::cout << std::endl;

@@ -51,10 +51,11 @@ int main(int argc, char* argv[])
 
 		if (scheduling_type) {
 			schedule = simulate_global(tasks, processors);
-			display_scheduling(schedule, tasks);	
 		} else {
 			simulate_partitioned(tasks, processors);
 		}
+		
+		display_scheduling(schedule);	
 		
 		return 0;
 	}

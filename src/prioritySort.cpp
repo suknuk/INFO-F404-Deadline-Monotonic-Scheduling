@@ -39,6 +39,22 @@ bool utilizationPriority(const Task &t1, const Task &t2)
 		return false;
 	// ow utilizations are equal
 	} else {
-		return true;
+		// sort by deadlines as it is a DM system
+		if (t1.get_deadline() < t2.get_deadline()){
+			return true;
+		} else if (t1.get_deadline() > t2.get_deadline()) {
+			return false;
+		// ow deadlines are equal
+		} else {
+			// sort by the offset
+			if (t1.get_offset() < t2.get_offset()) {
+				return true;
+			} else if (t1.get_offset() > t2.get_offset()) {
+				return false;
+			// ow they are equal in deadline, utilization and offset, so dont change the order
+			} else {
+				return true;
+			}
+		}
 	}
 }

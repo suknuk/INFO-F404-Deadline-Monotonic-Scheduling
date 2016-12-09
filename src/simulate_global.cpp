@@ -1,8 +1,8 @@
 #include <string>
-#include "usefull_methods.h"
 #include <iostream>
 #include <cmath>
 #include <algorithm>
+#include "usefull_methods.h"
 #include "prioritySort.h"
 #include "pretty_output.h"
 #include "simulate_global.h"
@@ -69,8 +69,9 @@ std::vector <std::vector<Task*> > simulate_global(std::vector<Task> &tasks, int 
 		// System can be scheduled
 		// possible that we can schedule it with fewer tasks?
 		if (processors > ceil(utilization)) {
-			// we look between ceil(utilization) and processors
+			// use a tmp schedule because we want to return the original schedule, not the optimized one
 			std::vector <std::vector<Task*> > schedule_tmp;
+			// we look between ceil(utilization) and processors
 			int min_processors = minimul_global_processors_required(tasks, schedule_tmp, ceil(utilization), study_interval);
 			if (min_processors < processors){
 				std::cout << "System could have been scheduled with " << min_processors << " processors."
