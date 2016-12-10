@@ -33,27 +33,16 @@ std::vector <std::vector<Task*> > simulate_partitioned(std::vector<Task> &tasks,
 		// System can be scheduled
 	}
 
-
-	/*
-	for (unsigned i = 0; i < tasks.size(); i++)
-	{
-		std::cout << "i: " << i << " ID: " << tasks[i].get_uid() << " U: " << tasks[i].calculate_utilization() << std::endl;
-	}
-	
-	std::vector<Task*> single_schedule;
-	UniprocessorDM proc;
-	std::cout << "can add task 3 : " << proc.can_add_task(tasks[3]) << std::endl;
-	proc.add_task(tasks[3]);
-	std::cout << "can add task 2 : " << proc.can_add_task(tasks[2]) << std::endl;
-	proc.add_task(tasks[2]);
-	std::cout << "can add task 1 : " << proc.can_add_task(tasks[1]) << std::endl;
-	single_schedule = proc.get_schedule();		
-	schedule.push_back(single_schedule);*/
 	return schedule_final;
 }
 
 bool do_simulate_partitioned(std::vector<Task> &tasks, int processors, std::vector<UniprocessorDM> &schedule)
 {
+	schedule.clear();
+	for (int i = 0; i < processors; i++) {
+		schedule.push_back(UniprocessorDM());
+	}
+
 	// Iterate every task
 	for (unsigned task_nr = 0; task_nr < tasks.size(); task_nr++) {
 		int best_processor_assignment = -1;
@@ -61,7 +50,7 @@ bool do_simulate_partitioned(std::vector<Task> &tasks, int processors, std::vect
 		
 		//Iterate every uniprocessor 
 		for (unsigned process_nr = 0; process_nr < schedule.size(); process_nr++) {
-			// can it be scheduled?
+			// can task be scheduled on current uniprocessor?
 			if (schedule[process_nr].can_add_task(tasks[task_nr])) {
 				double utilization = schedule[process_nr].get_total_utilization() + tasks[task_nr].calculate_utilization();
 				// new best best fit?
@@ -73,7 +62,11 @@ bool do_simulate_partitioned(std::vector<Task> &tasks, int processors, std::vect
 		}
 		// we now checked every uniprocessor
 		// take best assignment, if it exists, and add the task to the uniprocessor
-		// TODO continue here!
+		if (best_processor_assignment == -1) {
+			return false;
+		} else { 
+			schedule[best_processor_assignment].add_task(tasks[task_nr]);
+		}
 	}
 	return false;
 }
