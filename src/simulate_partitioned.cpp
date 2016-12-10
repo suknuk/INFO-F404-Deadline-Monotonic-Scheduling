@@ -28,7 +28,7 @@ std::vector <std::vector<Task*> > simulate_partitioned(std::vector<Task> &tasks,
 		// TODO -->
 		//processors = minimul_partitioned_processors_required(tasks, schedule, processors, study_interval);
 		std::cout << "Number of processors required : " << processors << std::endl;
-		do_simulate_partitioned(tasks, processors, schedule);
+		do_simulate_partitioned(tasks, processors, schedule); // delete me later
 	} else {
 		// System can be scheduled, are less processors possible?
 	}
