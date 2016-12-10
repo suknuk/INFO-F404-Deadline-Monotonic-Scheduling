@@ -30,6 +30,11 @@ bool deadlinePriority(const Task &t1, const Task &t2)
 	}
 }
 
+bool deadlinePriorityPointers(const Task *t1, const Task *t2)
+{
+	return deadlinePriority(Task(*t1), Task(*t2));
+}
+
 bool utilizationPriority(const Task &t1, const Task &t2)
 {
 	// sort by utilization first as it is DM

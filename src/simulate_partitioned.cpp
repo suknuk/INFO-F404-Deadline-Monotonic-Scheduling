@@ -10,14 +10,13 @@ std::vector <std::vector<Task*> > simulate_partitioned(std::vector<Task> &tasks,
 {
 	// Sort tasks by utilization for 'bin fitting'
 	std::sort(tasks.begin(), tasks.end(), utilizationPriority);
-	
-	double utilization = total_utilization(tasks);
-	
-	std::vector< std::vector<Task*> > schedule_final;
-	std::vector<UniprocessorDM> schedule;
 
+	double utilization = total_utilization(tasks);
+
+	std::vector<UniprocessorDM> schedule;
+	
 	// system can't be scheduled with the given parameters
-	if (utilization > double(processors) || do_simulate_partitioned(tasks, processors, schedule)) {
+	if (utilization > double(processors) || !(do_simulate_partitioned(tasks, processors, schedule))) {
 		std::cout << "System is unable to be scheduled on this system with "
 			<< processors << " processors. Determining the required number."
 			<< std::endl;
@@ -30,11 +29,12 @@ std::vector <std::vector<Task*> > simulate_partitioned(std::vector<Task> &tasks,
 		//processors = minimul_global_processors_required(tasks, schedule, processors, study_interval);
 		std::cout << "Number of processors required : " << processors << std::endl;
 	} else {
-		// System can be scheduled
+		// System can be scheduled, are less processors possible?
 	}
 
-	return schedule_final;
+	return uniprocessors_to_vector(schedule); 
 }
+
 
 bool do_simulate_partitioned(std::vector<Task> &tasks, int processors, std::vector<UniprocessorDM> &schedule)
 {
@@ -45,8 +45,9 @@ bool do_simulate_partitioned(std::vector<Task> &tasks, int processors, std::vect
 
 	// Iterate every task
 	for (unsigned task_nr = 0; task_nr < tasks.size(); task_nr++) {
-		int best_processor_assignment = -1;
-		double best_utilization = 1;
+		// default values
+		int best_processor_assignment = -1; 	// -1 -> no assignment
+		double best_utilization = 0; 		//best utilization is 1, worst is 0 -> we want 1
 		
 		//Iterate every uniprocessor 
 		for (unsigned process_nr = 0; process_nr < schedule.size(); process_nr++) {
@@ -54,7 +55,7 @@ bool do_simulate_partitioned(std::vector<Task> &tasks, int processors, std::vect
 			if (schedule[process_nr].can_add_task(tasks[task_nr])) {
 				double utilization = schedule[process_nr].get_total_utilization() + tasks[task_nr].calculate_utilization();
 				// new best best fit?
-				if (utilization < best_utilization) {
+				if (utilization > best_utilization) {
 					best_utilization = utilization;
 					best_processor_assignment = (int) process_nr;
 				}
@@ -68,9 +69,16 @@ bool do_simulate_partitioned(std::vector<Task> &tasks, int processors, std::vect
 			schedule[best_processor_assignment].add_task(tasks[task_nr]);
 		}
 	}
-	return false;
+	return true;
 }
 
+std::vector <std::vector<Task*> > uniprocessors_to_vector(std::vector<UniprocessorDM> &uniprocessors)
+{
+	std::vector< std::vector<Task*> > schedule_final;
 
+	for (unsigned processor = 0; processor < uniprocessors.size(); processor++) {
+		schedule_final.push_back(uniprocessors[processor].get_schedule());
+	}	
 
-
+	return schedule_final;
+}

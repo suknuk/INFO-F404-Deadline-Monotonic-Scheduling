@@ -104,9 +104,7 @@ bool do_simulate_global(std::vector<Task> &tasks, int study_interval,
 						// Store pointer of current task in the slot
 						schedule[scheduler_y][left] = &tasks[i];
 						wcet_to_fill -= 1;
-						/*
-						----- This may be stupid to do? ---------- 
-						*/
+						
 						// Left look ahead on the current processor for empty spots
 						for (;wcet_to_fill > 0 && 			// There are still wcet to fill
 							left + 1 < has_to_finish_at &&		// We are before the deadline

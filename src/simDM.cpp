@@ -49,12 +49,19 @@ int main(int argc, char* argv[])
 
 		std::vector <std::vector<Task *> > schedule;
 
+	// to delete later	
+		for (unsigned i = 0; i < tasks.size(); i++) {
+			std::cout << "task has pointer : " << &tasks[i] << std::endl;
+		}
+
 		if (scheduling_type) {
 			schedule = simulate_global(tasks, processors);
 		} else {
 			schedule = simulate_partitioned(tasks, processors);
 		}
-		
+	
+		std::cout << schedule[0][0] << std::endl;
+
 		display_scheduling(schedule);	
 		
 		return 0;

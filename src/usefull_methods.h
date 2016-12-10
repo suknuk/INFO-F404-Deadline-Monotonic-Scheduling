@@ -20,6 +20,9 @@ bool is_number(char* argv, int* number);
 // reading file to return a vector of tasks
 std::vector<Task> read_tasks_file(char* file_name);
 
+// total utilization from Task* vector
+double total_utilization(std::vector<Task*> &tasks);
+
 // Simple check of total utilization vs # processors
 double total_utilization(std::vector<Task> &tasks);
 
@@ -28,6 +31,9 @@ int gcd(int a, int b);
 
 // Calculate lcm of 2 numbers
 int lcm(int a, int b);
+
+// Calculate interval overload
+int interval(std::vector<Task*> &tasks);
 
 // Calculate the interval I = [0; max_offset + 2* hyper_period] -- p = lcm
 int interval(std::vector<Task> &tasks);

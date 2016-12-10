@@ -7,11 +7,11 @@
 class UniprocessorDM
 {
 private:
-	std::vector<Task> _tasks;
+	std::vector<Task*> _tasks;
 
 	// simulating the system and informs of failure/success
-	bool simulate_system(std::vector<Task> &tasks);
-	bool simulate_system(std::vector<Task> &tasks, std::vector<Task*> &schedule);
+	bool simulate_system(std::vector<Task*> &tasks);
+	bool simulate_system(std::vector<Task*> &tasks, std::vector<Task*> &schedule);
 public:
 	// checking if a task can be added
 	bool can_add_task(Task &task);
@@ -23,6 +23,7 @@ public:
 
 	// calculate the DM schedule with the tasks in tasks
 	std::vector<Task *> get_schedule();
+
 };
 
 #endif

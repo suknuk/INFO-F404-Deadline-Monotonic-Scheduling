@@ -8,6 +8,9 @@
 */ 
 bool deadlinePriority(const Task &t1, const Task &t2);
 
+// pointing to previous method by converting the pointers
+bool deadlinePriorityPointers(const Task *t1, const Task *t2);
+
 /*
  Sorting based on utilization
  Used for 'bin packing' for partitioned scheduling to assign tasks intially to the processors

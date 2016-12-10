@@ -77,6 +77,16 @@ std::vector<Task> read_tasks_file(char* file_name)
 	return tasks;
 }
 
+double total_utilization(std::vector<Task*> &tasks)
+{
+	// make vector of tasks instead of *tasks
+	std::vector<Task> tmp_tasks;
+	for (unsigned i = 0; i < tasks.size(); i++) {
+		tmp_tasks.push_back(*tasks[i]);
+	}
+	return total_utilization(tmp_tasks);
+}
+
 double total_utilization(std::vector<Task> &tasks)
 {
 	double total_utilization = 0;
@@ -97,6 +107,16 @@ int gcd(int a, int b)
 int lcm(int a, int b)
 {
 	return a * (b / gcd(a, b));
+}
+
+int interval(std::vector<Task*> &tasks)
+{
+	// make vector of tasks instead of *tasks
+	std::vector<Task> tmp_tasks;
+	for (unsigned i = 0; i < tasks.size(); i++) {
+		tmp_tasks.push_back(*tasks[i]);
+	}
+	return interval(tmp_tasks);
 }
 
 int interval(std::vector<Task> &tasks)
@@ -137,6 +157,7 @@ void display_tasks(std::vector<Task> &tasks)
 			<< std::setw(12) << tasks[i].get_deadline()
 			<< std::setw(8)  << tasks[i].get_wcet()
 			<< std::setw(15) << tasks[i].calculate_utilization()
+			<< std::setw(15) << &tasks[i] // to delete later
 			<< std::endl;
 	}
 }
@@ -150,6 +171,7 @@ void display_scheduling(std::vector <std::vector<Task *> > &schedule)
 				std::cout << std::setw(3) << "_";
 			} else {
 				// print ID of task
+				//std::cout << std::setw(15) << schedule[processor_nr][x];
 				std::cout << std::setw(3) << schedule[processor_nr][x]->get_uid();
 			}
 		}
