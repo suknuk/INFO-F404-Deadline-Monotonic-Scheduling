@@ -43,8 +43,6 @@ bool UniprocessorDM::simulate_system(std::vector<Task*> &tasks, std::vector<Task
 				if ( NULL == schedule[left]) {
 					schedule[left] = tasks[i];
 					wcet_to_fill -= 1;
-					std::cout << "simulate_system: stored " << &tasks[i] << " in " << left
-						<< "has id: " << tasks[i]->get_uid() << std::endl;
 				}
 			}
 			// system was not schedulable
@@ -58,7 +56,6 @@ bool UniprocessorDM::simulate_system(std::vector<Task*> &tasks, std::vector<Task
 
 bool UniprocessorDM::can_add_task(Task &task)
 {
-	std::cout << "can_add_task " << &task << std::endl;
 	// processor is empty, hence we can always add the task
 	if (this->_tasks.empty()) {
 		return true;
@@ -66,10 +63,6 @@ bool UniprocessorDM::can_add_task(Task &task)
 
 	std::vector<Task*> tmp_tasks = this->_tasks;
 	tmp_tasks.push_back(&task);
-
-	for (unsigned i = 0; i < tmp_tasks.size(); i++) {
-		std::cout << "can_add_task tmp_tasks pointer: " << &tmp_tasks[i] << std::endl;
-	}
 
 	// system of utilization larger than 1 is impossible of being scheduled
 	if (total_utilization(tmp_tasks) > 1) {
@@ -81,7 +74,6 @@ bool UniprocessorDM::can_add_task(Task &task)
 
 void UniprocessorDM::add_task(Task &task)
 {
-	std::cout << "add_task " << &task << std::endl;
 	this->_tasks.push_back(&task);	
 }
 
