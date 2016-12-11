@@ -53,4 +53,7 @@ double processor_idle_percentage(std::vector<Task*> &schedule);
 // Calculate the total idle time of a system
 int system_idle_time(std::vector< std::vector<Task*> > &schedule);
 
+// System idle time in %
+double system_idle_percentage(std::vector< std::vector<Task*> > &schedule);
+
 #endif

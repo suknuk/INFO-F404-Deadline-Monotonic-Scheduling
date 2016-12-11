@@ -180,6 +180,7 @@ void display_scheduling(std::vector <std::vector<Task *> > &schedule)
 			<< std::endl;
 	}
 	std::cout << "Total idle time: " << system_idle_time(schedule) 
+		<< " = " << system_idle_percentage(schedule) << "%" 
 		<< std::endl;
 }
 
@@ -198,6 +199,10 @@ int processor_idle_time(std::vector<Task*> &schedule)
 
 double processor_idle_percentage(std::vector<Task*> &schedule)
 {
+	// When no tasks are assigned to the system -> 100% utilization
+	if (schedule.size() == 0) {
+		return 100;
+	}
 	int idle = processor_idle_time(schedule);
 	double idle_percentage = double(idle)/schedule.size() * 100;
 
@@ -215,10 +220,13 @@ int system_idle_time(std::vector< std::vector<Task*> > &schedule)
 	return idle_time;
 }
 
-/*
 double system_idle_percentage(std::vector< std::vector<Task*> > &schedule)
 {
-
+	double percentage = 0;
+	for (unsigned i = 0; i < schedule.size(); i++) {
+		percentage += processor_idle_percentage(schedule[i]);
+	}
+	return (percentage / schedule.size());
 }
 
-*/
+
