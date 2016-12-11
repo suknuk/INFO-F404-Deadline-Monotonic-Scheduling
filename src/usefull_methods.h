@@ -47,6 +47,9 @@ void display_scheduling(std::vector <std::vector<Task *> > &schedule);
 // Calculate idle time of a single processor
 int processor_idle_time(std::vector<Task*> &schedule);
 
+// Calculate idle percentage time of single processor
+double processor_idle_percentage(std::vector<Task*> &schedule);
+
 // Calculate the total idle time of a system
 int system_idle_time(std::vector< std::vector<Task*> > &schedule);
 

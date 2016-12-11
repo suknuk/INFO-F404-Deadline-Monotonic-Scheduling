@@ -175,6 +175,7 @@ void display_scheduling(std::vector <std::vector<Task *> > &schedule)
 			}
 		}
 		std::cout << " || Idle time: " << processor_idle_time(schedule[processor_nr])
+			<< " = " << processor_idle_percentage(schedule[processor_nr]) << "%"
 			<< ", Interval: " << schedule[processor_nr].size()
 			<< std::endl;
 	}
@@ -195,6 +196,14 @@ int processor_idle_time(std::vector<Task*> &schedule)
 	return idle_time;
 }
 
+double processor_idle_percentage(std::vector<Task*> &schedule)
+{
+	int idle = processor_idle_time(schedule);
+	double idle_percentage = double(idle)/schedule.size() * 100;
+
+	return idle_percentage;
+}
+
 int system_idle_time(std::vector< std::vector<Task*> > &schedule)
 {
 	int idle_time = 0;
@@ -206,5 +215,10 @@ int system_idle_time(std::vector< std::vector<Task*> > &schedule)
 	return idle_time;
 }
 
+/*
+double system_idle_percentage(std::vector< std::vector<Task*> > &schedule)
+{
 
+}
 
+*/
