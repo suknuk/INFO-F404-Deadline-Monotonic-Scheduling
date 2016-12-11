@@ -175,9 +175,11 @@ void display_scheduling(std::vector <std::vector<Task *> > &schedule)
 			}
 		}
 		std::cout << " || Idle time: " << processor_idle_time(schedule[processor_nr])
+			<< ", Interval: " << schedule[processor_nr].size()
 			<< std::endl;
 	}
-	std::cout << "Total idle time: " << system_idle_time(schedule) << std::endl;
+	std::cout << "Total idle time: " << system_idle_time(schedule) 
+		<< std::endl;
 }
 
 int processor_idle_time(std::vector<Task*> &schedule)

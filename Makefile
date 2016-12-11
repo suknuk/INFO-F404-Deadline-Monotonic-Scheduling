@@ -1,7 +1,7 @@
 CC = g++
 CFLAGS = -c -Wall -Wextra
 
-all: simDM
+all: simDM taskGenerator
 
 simDM: simDM.o usefull_methods.o task.o simulate_global.o simulate_partitioned.o uniprocessorDM.o prioritySort.o pretty_output.o
 	$(CC) simDM.o usefull_methods.o task.o simulate_global.o simulate_partitioned.o uniprocessorDM.o prioritySort.o pretty_output.o -o simDM
@@ -30,5 +30,12 @@ prioritySort.o: src/prioritySort.cpp
 pretty_output.o: src/pretty_output.cpp
 	$(CC) $(CFLAGS) src/pretty_output.cpp
 
+
+taskGenerator: taskGenerator.o
+	$(CC) taskGenerator.o -o taskGenerator
+
+taskGenerator.o: src/taskGenerator.cpp
+	$(CC) $(CFLAGS) src/taskGenerator.cpp
+
 clean: 
-	rm *.o simDM
+	rm *.o simDM taskGenerator
