@@ -25,17 +25,19 @@ std::vector <std::vector<Task*> > simulate_partitioned(std::vector<Task> &tasks,
 			processors = ceil(utilization);
 		}
 		// find min. required processors
-		// TODO -->
-		//processors = minimul_partitioned_processors_required(tasks, schedule, processors, study_interval);
+		processors = minimum_partitioned_processors_required(tasks, schedule);
 		std::cout << "Number of processors required : " << processors << std::endl;
-		do_simulate_partitioned(tasks, processors, schedule); // delete me later
 	} else {
 		// System can be scheduled, are less processors possible?
+		std::vector<UniprocessorDM> tmp_schedule;
+		int min_processors = minimum_partitioned_processors_required(tasks, tmp_schedule);
+		if (min_processors < processors) {
+			std::cout << "System could have been scheduled with " << min_processors << " processors."
+				<< std::endl;
+		}
 	}
-
 	return uniprocessors_to_vector(schedule); 
 }
-
 
 bool do_simulate_partitioned(std::vector<Task> &tasks, int processors, std::vector<UniprocessorDM> &schedule)
 {
@@ -71,6 +73,19 @@ bool do_simulate_partitioned(std::vector<Task> &tasks, int processors, std::vect
 		}
 	}
 	return true;
+}
+
+int minimum_partitioned_processors_required(std::vector<Task> &tasks, std::vector<UniprocessorDM> &schedule)
+{
+	// min #processors has to be at least the total utilization rounded up
+	int processors = ceil(total_utilization(tasks));
+
+	// now we simulate the system until we find the required processors
+	while (!do_simulate_partitioned(tasks, processors, schedule)) {
+		processors++;
+	}
+
+	return processors;
 }
 
 std::vector <std::vector<Task*> > uniprocessors_to_vector(std::vector<UniprocessorDM> &uniprocessors)
