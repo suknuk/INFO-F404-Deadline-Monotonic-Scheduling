@@ -1,6 +1,7 @@
 #include <iostream>
 #include <string>
 #include <sstream>
+#include "random_system.h"
 
 bool is_number(char* argv, int* number)
 {
@@ -56,7 +57,9 @@ int main(int argc, char* argv[])
 			<< utilization_factor << "% utilization " 
 			<< "to file: " << args[6] 
 			<< std::endl;
-
+		
+		RandomSystem rs(tasks, utilization_factor);
+		
 		return 0;
 	}
 

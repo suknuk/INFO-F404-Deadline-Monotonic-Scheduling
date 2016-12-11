@@ -174,12 +174,12 @@ void display_scheduling(std::vector <std::vector<Task *> > &schedule)
 				std::cout << std::setw(3) << schedule[processor_nr][x]->get_uid();
 			}
 		}
-		std::cout << " || Idle time: " << processor_idle_time(schedule[processor_nr])
+		std::cout << " || Idle time: " << processor_idle_time(schedule[processor_nr]) << " time units"
 			<< " = " << processor_idle_percentage(schedule[processor_nr]) << "%"
 			<< ", Interval: " << schedule[processor_nr].size()
 			<< std::endl;
 	}
-	std::cout << "Total idle time: " << system_idle_time(schedule) 
+	std::cout << "Total idle time: " << system_idle_time(schedule) << " time units"
 		<< " = " << system_idle_percentage(schedule) << "%" 
 		<< std::endl;
 }

@@ -31,11 +31,14 @@ pretty_output.o: src/pretty_output.cpp
 	$(CC) $(CFLAGS) src/pretty_output.cpp
 
 
-taskGenerator: taskGenerator.o
-	$(CC) taskGenerator.o -o taskGenerator
+taskGenerator: taskGenerator.o random_system.o
+	$(CC) taskGenerator.o random_system.o -o taskGenerator
 
 taskGenerator.o: src/taskGenerator.cpp
 	$(CC) $(CFLAGS) src/taskGenerator.cpp
+
+random_system.o: src/random_system.cpp
+	$(CC) $(CFLAGS) src/random_system.cpp
 
 clean: 
 	rm *.o simDM taskGenerator
