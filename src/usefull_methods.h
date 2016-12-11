@@ -44,4 +44,10 @@ void display_tasks(std::vector<Task> &tasks);
 // Simple output of the scheduling
 void display_scheduling(std::vector <std::vector<Task *> > &schedule);
 
+// Calculate idle time of a single processor
+int processor_idle_time(std::vector<Task*> &schedule);
+
+// Calculate the total idle time of a system
+int system_idle_time(std::vector< std::vector<Task*> > &schedule);
+
 #endif

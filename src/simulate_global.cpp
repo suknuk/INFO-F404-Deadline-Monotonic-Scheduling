@@ -75,7 +75,14 @@ std::vector <std::vector<Task*> > simulate_global(std::vector<Task> &tasks, int 
 			if (min_processors < processors){
 				std::cout << "System could have been scheduled with " << min_processors << " processors."
 					<< std::endl;
+			} else {
+				std::cout << processors << " is the least required # of processors to schedule this system."
+					<< std::endl;
 			}
+
+		} else {
+			std::cout << processors << " is the least required # of processors to schedule this system."
+				<< std::endl;
 		}	
 	}
 	return schedule;

@@ -34,6 +34,9 @@ std::vector <std::vector<Task*> > simulate_partitioned(std::vector<Task> &tasks,
 		if (min_processors < processors) {
 			std::cout << "System could have been scheduled with " << min_processors << " processors."
 				<< std::endl;
+		} else {
+		 	std::cout << processors << " is the least required # of processors to schedule this system."
+				<< std::endl;
 		}
 	}
 	return uniprocessors_to_vector(schedule); 

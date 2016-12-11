@@ -165,6 +165,7 @@ void display_tasks(std::vector<Task> &tasks)
 void display_scheduling(std::vector <std::vector<Task *> > &schedule)
 {
 	for (unsigned processor_nr = 0; processor_nr < schedule.size(); processor_nr++) {
+		std::cout << std::setw(6) << "#p" << processor_nr << ":";
 		for (unsigned x = 0; x < schedule[processor_nr].size(); x++) {
 			if (NULL == schedule[processor_nr][x]) {
 				std::cout << std::setw(3) << "_";
@@ -173,13 +174,35 @@ void display_scheduling(std::vector <std::vector<Task *> > &schedule)
 				std::cout << std::setw(3) << schedule[processor_nr][x]->get_uid();
 			}
 		}
-		std::cout << std::endl;
+		std::cout << " || Idle time: " << processor_idle_time(schedule[processor_nr])
+			<< std::endl;
 	}
+	std::cout << "Total idle time: " << system_idle_time(schedule) << std::endl;
 }
 
+int processor_idle_time(std::vector<Task*> &schedule)
+{
+	int idle_time = 0;
 
+	for (unsigned i = 0; i < schedule.size(); i++) {
+		if (NULL == schedule[i]) {
+			idle_time++;
+		}
+	}
 
+	return idle_time;
+}
 
+int system_idle_time(std::vector< std::vector<Task*> > &schedule)
+{
+	int idle_time = 0;
+
+	for (unsigned i = 0; i < schedule.size(); i++) {
+		idle_time += processor_idle_time(schedule[i]);
+	}
+
+	return idle_time;
+}
 
 
 
