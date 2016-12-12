@@ -31,8 +31,8 @@ pretty_output.o: src/pretty_output.cpp
 	$(CC) $(CFLAGS) src/pretty_output.cpp
 
 
-taskGenerator: taskGenerator.o random_system.o
-	$(CC) taskGenerator.o random_system.o -o taskGenerator
+taskGenerator: taskGenerator.o random_system.o task.o usefull_methods.o
+	$(CC) taskGenerator.o random_system.o task.o usefull_methods.o -o taskGenerator
 
 taskGenerator.o: src/taskGenerator.cpp
 	$(CC) $(CFLAGS) src/taskGenerator.cpp

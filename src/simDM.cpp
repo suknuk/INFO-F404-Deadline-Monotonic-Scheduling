@@ -2,7 +2,6 @@
 #include <string>
 #include <vector>
 #include <algorithm>
-//#include <map>
 #include <iomanip>
 #include "usefull_methods.h"
 #include "task.h"

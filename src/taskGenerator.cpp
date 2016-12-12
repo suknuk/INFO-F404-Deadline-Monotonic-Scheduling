@@ -1,16 +1,9 @@
 #include <iostream>
 #include <string>
 #include <sstream>
+#include "task.h"
+#include "usefull_methods.h"
 #include "random_system.h"
-
-bool is_number(char* argv, int* number)
-{
-	std::istringstream ss(argv);
-	if (!((ss >> *number) && (ss.eof()))) {
-		return false; 
-	}
-	return true;
-}
 
 int main(int argc, char* argv[])
 {

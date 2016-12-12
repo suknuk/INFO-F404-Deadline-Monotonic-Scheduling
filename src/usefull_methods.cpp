@@ -156,7 +156,7 @@ void display_tasks(std::vector<Task> &tasks)
 			<< std::setw(10)  << tasks[i].get_period()
 			<< std::setw(12) << tasks[i].get_deadline()
 			<< std::setw(8)  << tasks[i].get_wcet()
-			<< std::setw(15) << tasks[i].calculate_utilization()
+			<< std::setw(15) << tasks[i].calculate_utilization() * 100
 			<< std::endl;
 	}
 }
