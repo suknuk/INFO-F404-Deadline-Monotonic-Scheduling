@@ -8,11 +8,13 @@
 
 void show_usage(char* argv0)
 {
-	std::cerr << "Usage: " << argv0 << " [-g | -p] <tasksFile> <processorsNbr>\n" 
+	std::cerr << "Usage: " << argv0 << " [-g | -p] <tasksFile> <processorsNbr>"
+		<< " [ -d ]\n"
 		<< "\t-p\t\tPartitioned scheduling strategy\n"
 		<< "\t-g\t\tGlobal scheduling strategy\n"
 		<< "\t<tasksFile>\tFile describing the tasks\n"
-		<< "\t<processorsNbr>\tNumber of processors contained by the System"
+		<< "\t<processorsNbr>\tNumber of processors contained by the System\n"
+		<< "\t[ -d \t\tFlag to display the scheduling in the console ]"
 		<< std::endl;
 }
 

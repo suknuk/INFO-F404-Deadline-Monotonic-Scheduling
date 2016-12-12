@@ -130,7 +130,7 @@ void RandomSystem::generate_system()
 
 				double utilization_before = total_utilization(_tasks_vector)*100 - this->_utilization;
 
-				// increase wcet by 1 if U > 2, otherwise subtract by 1
+				// increase wcet by 1 if U > 0, otherwise subtract by 1
 				int add_or_sub;
 				if (total_utilization(_tasks_vector)*100 - this->_utilization > 0) {
 					add_or_sub = -1;
@@ -158,7 +158,6 @@ void RandomSystem::generate_system()
 					// go to next task
 					break; // quits the while loop
 				}
-
 			}
 		}
 	} // finished filling up wcet if needed	

@@ -76,7 +76,7 @@ int main(int argc, char* argv[])
 		std::cerr << args[5] << " must be -o" << std::endl;
 	}
 	
-	// hyper period flag and int given?
+	// hyper period flag ?
 	else if (argc == 9 && args[7] != "-hp") {
 		std::cerr << args[7] << " must be -hp" << std::endl;
 	}

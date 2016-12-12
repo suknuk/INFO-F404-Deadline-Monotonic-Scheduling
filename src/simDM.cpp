@@ -35,6 +35,19 @@ int main(int argc, char* argv[])
 	}
 	else 
 	{
+		bool show_scheduling = false;
+		// display the scheduled tasks in the console flag?
+		if (argc == 5) {
+			std::string args(argv[4]);
+			if (args != "-d") {
+				std::cerr << "To display the scheduling in the console, the flag -d must be used"
+					<< std::endl;
+				show_usage(argv[0]);
+				return 1;
+			}
+			show_scheduling = true;
+		}
+
 		// Stating the mode with input data that will be executed
 		std::cout << "Simulating system described in " << file_name << " in the "
 			<< ((scheduling_type)?"global":"partitioned") << " strategy with "
@@ -54,7 +67,7 @@ int main(int argc, char* argv[])
 			schedule = simulate_partitioned(tasks, processors);
 		}
 
-		display_scheduling(schedule, false);	
+		display_scheduling(schedule, show_scheduling);	
 		
 		return 0;
 	}
