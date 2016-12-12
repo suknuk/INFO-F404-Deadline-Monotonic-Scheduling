@@ -21,18 +21,19 @@ void RandomSystem::generate_system()
 		double rnd_utilization = std::rand() % 99 + 1;// between 1 and 100
 		utilization.push_back( rnd_utilization ); 
 		total_generated_utilization += rnd_utilization;
-		// std::cout << i << ": " << utilization[i] << std::endl;
 	}
 
 	// now make the generated total utilization equal to the target utilization
 	for (int i = 0; i < this->_tasks; i++) {
 		utilization[i] = (utilization[i] / total_generated_utilization) * this->_utilization;
-		// std::cout << i << ": " << utilization[i] << std::endl;
 	}
 
 	// carry value that takes over the utilization factor that was over or under achieved by 
 	// the previous tasks
 	double utilization_carry = 0;
+
+	// store the LCM, otherwise, with too many tasks, we might get a value too large
+	int total_lcm = 1;
 
 	//std::vector<Task> tasks;
 	// find values that try to match the utilization given by the generated utilization value
@@ -69,6 +70,29 @@ void RandomSystem::generate_system()
 			}
 		}
 
+		// the new total lcm
+		int tmp_lcm = lcm(total_lcm, best_period);
+
+		// new lcm too large?
+		if (tmp_lcm > this->_max_hyper_period) {
+			// take random period already existing in the tasks
+			int new_period = _tasks_vector[std::rand() % _tasks_vector.size()].get_period();
+			
+			//store the difference of the old vs new 
+			double difference = double(new_period)/double(best_period);
+
+			//now change the other task variables according to this %
+			best_period = new_period;
+			best_wcet =  best_wcet * difference;
+			
+			// special case of 0 wcet
+			if (best_wcet < 1) {
+				best_wcet = 1;
+			}
+		}
+
+		total_lcm = tmp_lcm;
+
 		// take over the best carry value
 		utilization_carry = best_carry;
 
@@ -82,16 +106,7 @@ void RandomSystem::generate_system()
 			deadline = std::rand() % (best_period - best_wcet) + best_wcet;
 		}
 
-		/*
-		double reached_diff = (double(best_wcet)/double(best_period)) * 100;
-
-		std::cout << "offset : " << offset << ", period: " << best_period
-			<< ", deadline: " << deadline << ", wcet: " << best_wcet
-			<< ", target U: " << utilization[i]
-			<< ", reached U: " << reached_diff
-			<< std::endl;
-		*/
-
+		// add new task with the values to the vector
 		Task task(offset, best_period, deadline, best_wcet);
 		this->_tasks_vector.push_back(task);
 	}
@@ -143,10 +158,11 @@ void RandomSystem::generate_system()
 	
 }
 
-RandomSystem::RandomSystem(int tasks, int utilization)
+RandomSystem::RandomSystem(int tasks, int utilization, int max_hyper_period)
 {
 	this->_tasks = tasks;
 	this->_utilization = utilization;
+	this->_max_hyper_period = max_hyper_period;
 	generate_system();
 }
 
