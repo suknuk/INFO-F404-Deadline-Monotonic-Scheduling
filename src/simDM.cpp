@@ -54,7 +54,7 @@ int main(int argc, char* argv[])
 			schedule = simulate_partitioned(tasks, processors);
 		}
 
-		display_scheduling(schedule);	
+		display_scheduling(schedule, false);	
 		
 		return 0;
 	}

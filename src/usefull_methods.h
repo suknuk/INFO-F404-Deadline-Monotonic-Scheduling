@@ -42,7 +42,7 @@ int interval(std::vector<Task> &tasks);
 void display_tasks(std::vector<Task> &tasks);
 
 // Simple output of the scheduling
-void display_scheduling(std::vector <std::vector<Task *> > &schedule);
+void display_scheduling(std::vector <std::vector<Task *> > &schedule, bool show_assignment);
 
 // Calculate idle time of a single processor
 int processor_idle_time(std::vector<Task*> &schedule);

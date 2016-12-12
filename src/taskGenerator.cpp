@@ -1,16 +1,42 @@
 #include <iostream>
 #include <string>
 #include <sstream>
+#include <fstream>
 #include "task.h"
 #include "usefull_methods.h"
 #include "random_system.h"
+
+void show_task_generation_usage(char* argv0)
+{
+	std::cerr << "Usage: " << argv0 << " -u <UtilizationFactor> -n <tasksNumber>"
+		<< " -o <OutputFile>\n"
+		<< "\t-u <UtilizationFactor>\tInteger utilization of the system\n"
+		<< "\t-n <tasksNumber>\tInteger number of tasks of the system\n"
+		<< "\t-o <OutputFile>\t\tPath to the to be written file"
+		<< std::endl;
+}
+
+void write_tasks_to_file(std::vector<Task> &tasks, std::string &file_name)
+{
+	std::ofstream out(file_name.c_str());
+	
+	for (unsigned i = 0; i < tasks.size(); i++){
+		out << tasks[i].get_offset() << " " 
+			<< tasks[i].get_period() << " "
+			<< tasks[i].get_deadline() << " "
+			<< tasks[i].get_wcet()
+			<< '\n';
+	}
+
+	out.close();
+}
 
 int main(int argc, char* argv[])
 {
 	// # of arguments
 	if (argc != 7) {
 		std::cerr << "Wrong number of arguments!" << std::endl;
-		// show_usage
+		show_task_generation_usage(argv[0]);
 		return 1;
 	}
 	
@@ -59,11 +85,12 @@ int main(int argc, char* argv[])
 		std::cout << "total U : " << total_utilization(tasks) * 100  << std::endl;
 		
 		// now write the tasks to file
-		
+		write_tasks_to_file(tasks, args[6]);
 
 		return 0;
 	}
 
-	//show_usage
+	show_task_generation_usage(argv[0]);
+	
 	return 1;
 }
