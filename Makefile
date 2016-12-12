@@ -55,7 +55,7 @@ random_system.o: src/random_system.cpp
 studyDM: studyDM.o
 	$(CC) studyDM.o -o studyDM
 
-studyDM.o: studyDM.o src/studyDM.cpp
+studyDM.o: src/studyDM.cpp
 	$(CC) $(CFLAGS) src/studyDM.cpp
 
 
