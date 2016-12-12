@@ -84,7 +84,7 @@ int main(int argc, char* argv[])
 			// simulate each system in global mode
 			for (unsigned t = 0; t < task_nr.size(); t++) {
 				for (unsigned u = 0; u < utilization_nr.size(); u++) {
-						
+				//	int req = m
 				}
 			}
 

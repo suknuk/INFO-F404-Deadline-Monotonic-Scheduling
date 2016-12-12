@@ -4,7 +4,6 @@
 #include <algorithm>
 #include "usefull_methods.h"
 #include "prioritySort.h"
-#include "pretty_output.h"
 #include "simulate_global.h"
 
 void initialize_global_schedule(std::vector< std::vector<Task *> > &schedule, 
@@ -19,7 +18,7 @@ void initialize_global_schedule(std::vector< std::vector<Task *> > &schedule,
 	}
 }
 
-int minimul_global_processors_required(std::vector<Task> &tasks, std::vector< std::vector<Task*> > &schedule, 
+int minimum_global_processors_required(std::vector<Task> &tasks, std::vector< std::vector<Task*> > &schedule, 
 	int processors, int study_interval)
 {
 	// we have to reset the schedule vector as it has data in it and processors could be changed
@@ -62,7 +61,7 @@ std::vector <std::vector<Task*> > simulate_global(std::vector<Task> &tasks, int 
 			processors = ceil(utilization);
 		}
 		// find min. required processors
-		processors = minimul_global_processors_required(tasks, schedule, processors, study_interval);
+		processors = minimum_global_processors_required(tasks, schedule, processors, study_interval);
 		std::cout << "Number of processors required : " << processors << std::endl;
 	} else {
 		// System can be scheduled
@@ -71,7 +70,7 @@ std::vector <std::vector<Task*> > simulate_global(std::vector<Task> &tasks, int 
 			// use a tmp schedule because we want to return the original schedule, not the optimized one
 			std::vector <std::vector<Task*> > schedule_tmp;
 			// we look between ceil(utilization) and processors
-			int min_processors = minimul_global_processors_required(tasks, schedule_tmp, ceil(utilization), study_interval);
+			int min_processors = minimum_global_processors_required(tasks, schedule_tmp, ceil(utilization), study_interval);
 			if (min_processors < processors){
 				std::cout << "System could have been scheduled with " << min_processors << " processors."
 					<< std::endl;
