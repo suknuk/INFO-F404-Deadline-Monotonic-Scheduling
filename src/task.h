@@ -18,6 +18,10 @@ public:
 	int get_wcet() const;
 	int get_uid() const;
 
+	// setter
+	void set_deadline(int deadline);
+	void set_wcet(int wcet);
+
 };
 
 // overloading the comparison operator so we can sort 

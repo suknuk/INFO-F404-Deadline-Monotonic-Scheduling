@@ -47,6 +47,16 @@ int Task::get_uid() const
 	return this->uid;
 }
 
+void Task::set_deadline(int deadline)
+{
+	this->deadline = deadline;
+}
+
+void Task::set_wcet(int wcet)
+{
+	this->wcet = wcet;
+}
+
 bool operator<(const Task &t1, const Task &t2)
 {
 	// sort by deadline first as it is DM

@@ -4,11 +4,13 @@
 #include "usefull_methods.h"
 #include "random_system.h"
 
+// TODO calculate the lcm so that it does not get too high!
+
 void RandomSystem::generate_system()
 {
 	std::srand(std::time(0));
 	// create a random max_Period between 9 + #tasks*2  and 100 
-	int max_period = std::rand() % (41 - this->_tasks*2 )  + ( 9 + this->_tasks*2) ;
+	int max_period = std::rand() % (91 - this->_tasks*2 )  + ( 9 + this->_tasks*2) ;
 	std::cout << "Max period = " << max_period << std::endl;
 
 	std::vector<double> utilization;
@@ -93,10 +95,52 @@ void RandomSystem::generate_system()
 		Task task(offset, best_period, deadline, best_wcet);
 		this->_tasks_vector.push_back(task);
 	}
-	// TODO When the carry value is too big, go back to the list and look where we can increase
-	// the Utilization of single tasks to make it closer to the wanted value
-	std::cout << "U carry: " << utilization_carry << std::endl;
 
+	// When the carry value is too big, go back to the list and look where we can increase
+	// the Utilization of single tasks to make it closer to the wanted value
+	if (total_utilization(_tasks_vector)*100 - this->_utilization > 2 || 
+		total_utilization(_tasks_vector)*100 - this->_utilization < -2) {	
+		
+		for (unsigned i = 0; i < _tasks_vector.size(); i++) {
+			// increase the utilization until 100% or the target total utilization is reached
+			while( _tasks_vector[i].calculate_utilization() < 1 &&
+				(total_utilization(_tasks_vector)*100 - this->_utilization > 2 ||
+				total_utilization(_tasks_vector)*100 - this->_utilization < -2) ) {
+
+				// increase the deadline if needed
+				if (_tasks_vector[i].get_deadline() < _tasks_vector[i].get_period() && 
+					_tasks_vector[i].get_deadline() == _tasks_vector[i].get_wcet()) {
+					_tasks_vector[i].set_deadline( _tasks_vector[i].get_deadline() + 1);
+				}
+
+				double utilization_before = total_utilization(_tasks_vector)*100 - this->_utilization;
+
+				// increase wcet by 1
+				_tasks_vector[i].set_wcet(_tasks_vector[i].get_wcet() + 1);
+				
+				double utilization_after = total_utilization(_tasks_vector)*100 - this->_utilization;
+				
+				// cast positive for easier comparison
+				if (utilization_before < 0) {
+					utilization_before *= -1;
+				}
+				if (utilization_after < 0) {
+					utilization_after *= -1;
+				}
+
+				// did this increase help to reach the target U or did it make it worse?
+				if (utilization_before < utilization_after) {
+					// made it worse! 
+					// undo the step
+					_tasks_vector[i].set_wcet(_tasks_vector[i].get_wcet() - 1);
+					// go to next task
+					break; // quits the while loop
+				}
+
+			}
+		}
+	} // finished filling up wcet if needed	
+	
 }
 
 RandomSystem::RandomSystem(int tasks, int utilization)
