@@ -1,16 +1,16 @@
 #include <iostream>
 #include <cstdlib>
 #include <ctime>
-#include <vector>
-#include "task.h"
+//#include <vector>
+//#include "task.h"
 #include "usefull_methods.h"
 #include "random_system.h"
 
 void RandomSystem::generate_system()
 {
 	std::srand(std::time(0));
-	// create a random max_Period between 10 and 100
-	int max_period = std::rand() % 90 + 10;
+	// create a random max_Period between 9 + #tasks*2  and 100 
+	int max_period = std::rand() % (91 - this->_tasks*2 )  + ( 9 + this->_tasks*2) ;
 	std::cout << "Max period = " << max_period << std::endl;
 
 	std::vector<double> utilization;
@@ -34,7 +34,7 @@ void RandomSystem::generate_system()
 	// the previous tasks
 	double utilization_carry = 0;
 
-	std::vector<Task> tasks;
+	//std::vector<Task> tasks;
 	// find values that try to match the utilization given by the generated utilization value
 	for (int i = 0; i < this->_tasks; i++) {
 		
@@ -43,12 +43,12 @@ void RandomSystem::generate_system()
 		int best_wcet = 1;
 		int best_period = 1;
 		double best_carry = 0;
-		double lowest_diff = 100; // 100% is the worst value possible
+		double lowest_diff = 101; // 101% is the worst value possible
 
 		// iterate every deadline
-		for (int period = 1; period < max_period; period++) {
+		for (int period = 1; period <= max_period; period++) {
 			// iterate every period
-			for (int wcet = 1; wcet < period; wcet++) {
+			for (int wcet = 1; wcet <= period; wcet++) {
 				// what is the utilization of these values?
 				double tmp_u = (double(wcet)/double(period)) * 100;
 			
@@ -72,11 +72,17 @@ void RandomSystem::generate_system()
 		// take over the best carry value
 		utilization_carry = best_carry;
 
-		std::cout << "Carry U : " << utilization_carry << ", ";
-
 		// get a deadline between wcet and the period
-		int deadline = std::rand() % (best_period - best_wcet) + best_wcet;
+		int deadline;
+		
+		// case when Utilization is at 100%
+		if (best_period == best_wcet) {
+			deadline = best_period;
+		} else {
+			deadline = std::rand() % (best_period - best_wcet) + best_wcet;
+		}
 
+		/*
 		double reached_diff = (double(best_wcet)/double(best_period)) * 100;
 
 		std::cout << "offset : " << offset << ", period: " << best_period
@@ -84,12 +90,14 @@ void RandomSystem::generate_system()
 			<< ", target U: " << utilization[i]
 			<< ", reached U: " << reached_diff
 			<< std::endl;
+		*/
 
 		Task task(offset, best_period, deadline, best_wcet);
-		tasks.push_back(task);
+		this->_tasks_vector.push_back(task);
 	}
-	display_tasks(tasks);
-	std::cout << "total U : " << total_utilization(tasks) * 100  << std::endl;
+	// TODO When the carry value is too big, go back to the list and look where we can increase
+	// the Utilization of single tasks to make it closer to the wanted value
+	std::cout << "U carry: " << utilization_carry << std::endl;
 
 }
 
@@ -100,3 +108,7 @@ RandomSystem::RandomSystem(int tasks, int utilization)
 	generate_system();
 }
 
+std::vector<Task> RandomSystem::get_tasks()
+{
+	return this->_tasks_vector;
+}

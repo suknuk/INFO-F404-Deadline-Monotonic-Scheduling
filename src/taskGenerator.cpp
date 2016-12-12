@@ -52,7 +52,15 @@ int main(int argc, char* argv[])
 			<< std::endl;
 		
 		RandomSystem rs(tasks, utilization_factor);
+
+		std::vector<Task> tasks = rs.get_tasks();
+
+		display_tasks(tasks);
+		std::cout << "total U : " << total_utilization(tasks) * 100  << std::endl;
 		
+		// now write the tasks to file
+		
+
 		return 0;
 	}
 
