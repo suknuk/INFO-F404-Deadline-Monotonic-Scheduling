@@ -97,7 +97,7 @@ int main(int argc, char* argv[])
 			<< "to file: " << args[6] 
 			<< std::endl;
 		
-		RandomSystem rs(tasks, utilization_factor, 2000);
+		RandomSystem rs(tasks, utilization_factor, hyper_period);
 
 		std::vector<Task> tasks = rs.get_tasks();
 

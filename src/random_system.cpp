@@ -130,8 +130,15 @@ void RandomSystem::generate_system()
 
 				double utilization_before = total_utilization(_tasks_vector)*100 - this->_utilization;
 
-				// increase wcet by 1
-				_tasks_vector[i].set_wcet(_tasks_vector[i].get_wcet() + 1);
+				// increase wcet by 1 if U > 2, otherwise subtract by 1
+				int add_or_sub;
+				if (total_utilization(_tasks_vector)*100 - this->_utilization > 0) {
+					add_or_sub = -1;
+				} else {
+					add_or_sub = 1;
+				}
+
+				_tasks_vector[i].set_wcet(_tasks_vector[i].get_wcet() + add_or_sub);
 				
 				double utilization_after = total_utilization(_tasks_vector)*100 - this->_utilization;
 				
