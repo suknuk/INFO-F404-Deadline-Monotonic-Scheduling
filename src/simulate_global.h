@@ -9,7 +9,7 @@ void initialize_global_schedule(std::vector< std::vector<Task*> > &schedule,
 	int processors, int study_interval);
 
 // Calculating the minimul # of required processors
-int minimul_global_processors_required(std::vector<Task> &tasks, std::vector< std::vector<Task*> > &schedule,
+int minimum_global_processors_required(std::vector<Task> &tasks, std::vector< std::vector<Task*> > &schedule,
 	 int processors, int study_interval);
 
 // Calling the simulation for the processors required

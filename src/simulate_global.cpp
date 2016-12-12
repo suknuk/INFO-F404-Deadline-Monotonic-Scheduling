@@ -27,7 +27,7 @@ int minimum_global_processors_required(std::vector<Task> &tasks, std::vector< st
 	// Iterate until system is schedulable with the given processors
 	while(false == do_simulate_global(tasks, study_interval, schedule))
 	{
-		std::cout << processors << std::endl;
+		//std::cout << processors << std::endl;
 		processors += 1;
 		initialize_global_schedule(schedule, processors, study_interval);
 	}

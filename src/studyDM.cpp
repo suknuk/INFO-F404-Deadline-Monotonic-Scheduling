@@ -2,6 +2,7 @@
 #include <fstream>
 #include <sstream>
 #include <string>
+#include <cmath>
 #include "simulate_global.h"
 #include "simulate_partitioned.h"
 #include "random_system.h"
@@ -68,29 +69,41 @@ int main(int argc, char* argv[])
 			}
 
 			// save all generated systems in vector of vector
-			std::vector< std::vector<RandomSystem> > system;
+			//std::vector< std::vector<RandomSystem> > system;
+
+			std::vector< std::vector<Task*> > schedule;
+			std::vector<Task> tasks;
+
+			// storing the minimum requirements for global vs partitioned
+			std::vector<int> req_g;
+			std::vector<int> req_p;
 
 			// now iterate every possibility and save the output
-			for (unsigned t = 0; t < task_nr.size(); t++) {
-				std::vector<RandomSystem> line;
-				system.push_back(line);
-				for (unsigned u = 0; u < utilization_nr.size(); u++) {
+			for (int t = 0; t < tasks_descriptions; t++) {
+				for (int u = 0; u < utilization_descriptions; u++) {
 					// generate the random system
-					RandomSystem rs( task_nr[t], utilization_nr[u], 20000 );
-					system[t].push_back(rs);
+					RandomSystem rs(task_nr[t], utilization_nr[u], 20000 );
+					
+					tasks = rs.get_tasks();
+					int processors = ceil(total_utilization(tasks));
+					int study_interval = interval(tasks);
+					
+					req_g.push_back(minimum_global_processors_required(tasks, schedule, 
+							processors, study_interval));
+					std::vector<UniprocessorDM> pschedule;
+					req_p.push_back(minimum_partitioned_processors_required(tasks,pschedule));
+					
+					std::cout << t << " " <<  u  << std::endl;
 				}
 			}
 
-			// simulate each system in global mode
-			for (unsigned t = 0; t < task_nr.size(); t++) {
-				for (unsigned u = 0; u < utilization_nr.size(); u++) {
-				//	int req = m
+			// write the required processors of each system to file
+			for (int t = 0; t < tasks_descriptions; t++) {
+				for (int u = 0; u < utilization_descriptions; u++) {
+					
 				}
 			}
 
-
-			std::cout << tasks_descriptions << " " << utilization_descriptions << std::endl;
-			std::cout << system.size() << std::endl;
 
 		} else {
 			std::cerr << "Could not open input file " << argv[1] << std::endl;
