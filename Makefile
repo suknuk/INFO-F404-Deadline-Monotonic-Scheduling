@@ -8,8 +8,8 @@ all: simDM taskGenerator studyDM
 #simDM program
 #
 
-simDM: simDM.o usefull_methods.o task.o simulate_global.o simulate_partitioned.o uniprocessorDM.o prioritySort.o pretty_output.o
-	$(CC) simDM.o usefull_methods.o task.o simulate_global.o simulate_partitioned.o uniprocessorDM.o prioritySort.o pretty_output.o -o simDM
+simDM: simDM.o usefull_methods.o task.o simulate_global.o simulate_partitioned.o uniprocessorDM.o prioritySort.o
+	$(CC) simDM.o usefull_methods.o task.o simulate_global.o simulate_partitioned.o uniprocessorDM.o prioritySort.o -o simDM
 
 simDM.o: src/simDM.cpp
 	$(CC) $(CFLAGS) src/simDM.cpp
@@ -32,9 +32,6 @@ simulate_partitioned.o: src/simulate_partitioned.cpp
 prioritySort.o: src/prioritySort.cpp
 	$(CC) $(CFLAGS) src/prioritySort.cpp
 
-pretty_output.o: src/pretty_output.cpp
-	$(CC) $(CFLAGS) src/pretty_output.cpp
-
 #
 # taskGenerator program
 #
@@ -52,8 +49,8 @@ random_system.o: src/random_system.cpp
 # studyDM program
 #
 
-studyDM: studyDM.o
-	$(CC) studyDM.o -o studyDM
+studyDM: studyDM.o random_system.o task.o usefull_methods.o simulate_global.o simulate_partitioned.o uniprocessorDM.o prioritySort.o
+	$(CC) studyDM.o random_system.o task.o usefull_methods.o simulate_global.o simulate_partitioned.o uniprocessorDM.o prioritySort.o -o studyDM
 
 studyDM.o: src/studyDM.cpp
 	$(CC) $(CFLAGS) src/studyDM.cpp

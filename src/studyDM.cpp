@@ -2,6 +2,9 @@
 #include <fstream>
 #include <sstream>
 #include <string>
+#include "simulate_global.h"
+#include "simulate_partitioned.h"
+#include "random_system.h"
 #include "usefull_methods.h"
 
 void show_study_usage(char* argv0)
@@ -10,7 +13,6 @@ void show_study_usage(char* argv0)
 		<< "\t <SystemFile>\tPath to file that describes the to be studied system\n"
 		<< "\t <OutputFile>\tPath to file in which the results will be stored"
 		<< std::endl;
-
 }
 
 int main(int argc, char* argv[])
@@ -21,10 +23,6 @@ int main(int argc, char* argv[])
 		//show_study_usage(argv[0]);
 		//return 1;
 	}
-	// input file exists?
-//	else if(!does_file_exist(argv[1], &input_file)) {
-//		std::cerr << argv[1] << "cannot be opened" << std::endl;
-//	}
 	else {
 
 		// how many tasks settings
@@ -40,7 +38,6 @@ int main(int argc, char* argv[])
 		std::ifstream input(argv[1]);
 		if (input) {
 			std::string line;
-
 
 			// get tasks number
 			std::getline(input, line);
@@ -70,7 +67,30 @@ int main(int argc, char* argv[])
 				utilization_nr.push_back(u);
 			}
 
+			// save all generated systems in vector of vector
+			std::vector< std::vector<RandomSystem> > system;
+
+			// now iterate every possibility and save the output
+			for (unsigned t = 0; t < task_nr.size(); t++) {
+				std::vector<RandomSystem> line;
+				system.push_back(line);
+				for (unsigned u = 0; u < utilization_nr.size(); u++) {
+					// generate the random system
+					RandomSystem rs( task_nr[t], utilization_nr[u], 20000 );
+					system[t].push_back(rs);
+				}
+			}
+
+			// simulate each system in global mode
+			for (unsigned t = 0; t < task_nr.size(); t++) {
+				for (unsigned u = 0; u < utilization_nr.size(); u++) {
+						
+				}
+			}
+
+
 			std::cout << tasks_descriptions << " " << utilization_descriptions << std::endl;
+			std::cout << system.size() << std::endl;
 
 		} else {
 			std::cerr << "Could not open input file " << argv[1] << std::endl;

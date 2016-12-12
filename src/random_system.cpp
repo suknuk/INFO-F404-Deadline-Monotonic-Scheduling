@@ -4,14 +4,12 @@
 #include "usefull_methods.h"
 #include "random_system.h"
 
-// TODO calculate the lcm so that it does not get too high!
-
 void RandomSystem::generate_system()
 {
 	std::srand(std::time(0));
 	// create a random max_Period between 9 + #tasks*2  and 100 
 	int max_period = std::rand() % (91 - this->_tasks*2 )  + ( 9 + this->_tasks*2) ;
-	std::cout << "Max period = " << max_period << std::endl;
+//	std::cout << "Max period = " << max_period << std::endl;
 
 	std::vector<double> utilization;
 	double total_generated_utilization = 0;
