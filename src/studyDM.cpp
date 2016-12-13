@@ -70,24 +70,6 @@ int main(int argc, char* argv[])
 				utilization_nr.push_back(u);
 			}
 
-			/*
-			RandomSystem rs(task_nr[1], utilization_nr[1], 20000 );
-			for (int i = 0; i < 100; i++) {
-				std::vector< std::vector<Task*> > gschedule;
-				
-				std::vector<Task> tasks = rs.get_tasks();
-				std::sort(tasks.begin(), tasks.end(), deadlinePriority);
-
-				int processors = ceil(total_utilization(tasks));
-				int study_interval = interval(tasks);
-			
-				display_tasks(tasks);
-
-				int a = minimum_global_processors_required(tasks, gschedule, 
-						processors, study_interval);
-				std::cout << i << std::endl;
-			}*/
-
 			// storing the minimum requirements for global vs partitioned
 			std::vector<int> req_g;
 			std::vector<int> req_p;
@@ -95,7 +77,17 @@ int main(int argc, char* argv[])
 			// now iterate every possibility and save the output
 			for (int t = 0; t < tasks_descriptions; t++) {
 				for (int u = 0; u < utilization_descriptions; u++) {
+					// impossible to generate such a system? i.e. 2 tasks with U = 250%
+					// -> set it to -1
+					if (task_nr[t]*100 < utilization_nr[u]){
+						req_g.push_back(-1);
+						req_p.push_back(-1);
+						continue;
+					}
+
+
 					// generate the random system
+					
 					RandomSystem rs(task_nr[t], utilization_nr[u], 20000 );
 						
 					std::vector< std::vector<Task*> > gschedule;
@@ -112,8 +104,6 @@ int main(int argc, char* argv[])
 							processors, study_interval));
 					std::vector<UniprocessorDM> pschedule;
 					req_p.push_back(minimum_partitioned_processors_required(tasks,pschedule));
-				
-					std::cout << t << " " <<  u  << std::endl;
 				}
 			}
 

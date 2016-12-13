@@ -21,6 +21,8 @@ void initialize_global_schedule(std::vector< std::vector<Task *> > &schedule,
 int minimum_global_processors_required(std::vector<Task> &tasks, std::vector< std::vector<Task*> > &schedule, 
 	int processors, int study_interval)
 {
+	// higher total U than
+
 	// we have to reset the schedule vector as it has data in it and processors could be changed
 	initialize_global_schedule(schedule, processors, study_interval);
 
