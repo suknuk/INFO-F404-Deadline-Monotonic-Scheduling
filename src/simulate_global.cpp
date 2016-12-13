@@ -104,6 +104,7 @@ bool do_simulate_global(std::vector<Task> &tasks, int study_interval,
 			position < study_interval;
 			position += tasks[i].get_period())
 		{
+
 			// Position by which the current task has to be finished
 			int has_to_finish_at = position + tasks[i].get_deadline();
 			
@@ -123,28 +124,9 @@ bool do_simulate_global(std::vector<Task> &tasks, int study_interval,
 						// Store pointer of current task in the slot
 						schedule[scheduler_y][left] = &tasks[i];
 						wcet_to_fill -= 1;
-						left++;
 			
-						
-						while ((wcet_to_fill > 0) && (left + 1 < has_to_finish_at)) { 
-							// spot free on the right?
-							if (NULL == schedule[scheduler_y][left+1]) {
-								schedule[scheduler_y][left+1] = &tasks[i];
-								wcet_to_fill--;
-								left++;
-							}
-							// nope
-							else {
-								// preemptions add
-								preemptions[scheduler_y] = preemptions[scheduler_y] + 1;
-								goto evil_goto;
-							}
-							
-						}
-						/*
-						// Left look ahead on the current processor for empty spots
 						for (;wcet_to_fill > 0 && 			// There are still wcet to fill
-							(unsigned)left < schedule[scheduler_y].size() && // valgrind debugging
+							(unsigned)left + 1 < schedule[scheduler_y].size() && // valgrind debugging
 							left + 1 < has_to_finish_at &&		// We are before the deadline
 							NULL == schedule[scheduler_y][left+1];)	// There is a spot free on the right
 						
@@ -152,8 +134,10 @@ bool do_simulate_global(std::vector<Task> &tasks, int study_interval,
 							schedule[scheduler_y][left+1] = &tasks[i];
 							wcet_to_fill--;
 							left++;
-						}*/
-						evil_goto:
+						}
+						if (wcet_to_fill>0) {
+							preemptions[scheduler_y] = preemptions[scheduler_y] + 1;
+						}
 						break;
 					} 
 				}
@@ -163,7 +147,7 @@ bool do_simulate_global(std::vector<Task> &tasks, int study_interval,
 				}
 			}
 			// if there are still wcet left -> unable to schedule the system
-			if (wcet_to_fill > 0) {	
+			if (wcet_to_fill > 0) {
 				return false;
 			}			
 		}
