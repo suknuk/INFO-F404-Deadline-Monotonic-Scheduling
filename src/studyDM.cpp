@@ -3,9 +3,11 @@
 #include <sstream>
 #include <string>
 #include <cmath>
+#include <algorithm>
 #include "simulate_global.h"
 #include "simulate_partitioned.h"
 #include "random_system.h"
+#include "prioritySort.h"
 #include "usefull_methods.h"
 
 void show_study_usage(char* argv0)
@@ -71,8 +73,6 @@ int main(int argc, char* argv[])
 			// save all generated systems in vector of vector
 			//std::vector< std::vector<RandomSystem> > system;
 
-			std::vector< std::vector<Task*> > schedule;
-			std::vector<Task> tasks;
 
 			// storing the minimum requirements for global vs partitioned
 			std::vector<int> req_g;
@@ -83,26 +83,52 @@ int main(int argc, char* argv[])
 				for (int u = 0; u < utilization_descriptions; u++) {
 					// generate the random system
 					RandomSystem rs(task_nr[t], utilization_nr[u], 20000 );
+						
+					std::vector< std::vector<Task*> > gschedule;
 					
-					tasks = rs.get_tasks();
+					std::vector<Task> tasks = rs.get_tasks();
+					std::sort(tasks.begin(), tasks.end(), deadlinePriority);
+
 					int processors = ceil(total_utilization(tasks));
 					int study_interval = interval(tasks);
 					
-					req_g.push_back(minimum_global_processors_required(tasks, schedule, 
+					display_tasks(tasks);
+
+					req_g.push_back(minimum_global_processors_required(tasks, gschedule, 
 							processors, study_interval));
 					std::vector<UniprocessorDM> pschedule;
 					req_p.push_back(minimum_partitioned_processors_required(tasks,pschedule));
-					
+				
 					std::cout << t << " " <<  u  << std::endl;
 				}
 			}
 
-			// write the required processors of each system to file
-			for (int t = 0; t < tasks_descriptions; t++) {
-				for (int u = 0; u < utilization_descriptions; u++) {
-					
+			std::string output_file(argv[2]);
+			std::ofstream out(output_file.c_str());
+
+			for (int i = 0; i < 2; i++) {
+				int counter = 0;
+				if (i == 0) {
+					out << "global scheduling:\n";
+				} else {
+					out << "partitioned scheduling:\n";
+				}
+				// write the required processors of each system to file
+				for (int t = 0; t < tasks_descriptions; t++) {
+					for (int u = 0; u < utilization_descriptions; u++) {
+						
+						if (i == 0) {
+							out << req_g.at(counter) << " ";
+						} else {
+							out << req_p.at(counter) << " ";
+						}
+						counter++;
+					}
+					out << '\n';
 				}
 			}
+
+			out.close();
 
 
 		} else {

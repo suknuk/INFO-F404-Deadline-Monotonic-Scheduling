@@ -4,9 +4,12 @@
 #include "usefull_methods.h"
 #include "random_system.h"
 
+int time_counter = 0;
+
 void RandomSystem::generate_system()
 {
-	std::srand(std::time(0));
+	std::srand(std::time(0 << (time_counter)));
+	time_counter++;
 	// create a random max_Period between 9 + #tasks*2  and 100 
 	int max_period = std::rand() % (91 - this->_tasks*2 )  + ( 9 + this->_tasks*2) ;
 
@@ -112,7 +115,7 @@ void RandomSystem::generate_system()
 	// the Utilization of single tasks to make it closer to the wanted value
 	if (total_utilization(_tasks_vector)*100 - this->_utilization > 2 || 
 		total_utilization(_tasks_vector)*100 - this->_utilization < -2) {	
-		
+	
 		for (unsigned i = 0; i < _tasks_vector.size(); i++) {
 			// increase the utilization until 100% or the target total utilization is reached
 			while( _tasks_vector[i].calculate_utilization() < 1 &&
@@ -130,13 +133,17 @@ void RandomSystem::generate_system()
 				// increase wcet by 1 if U > 0, otherwise subtract by 1
 				int add_or_sub;
 				if (total_utilization(_tasks_vector)*100 - this->_utilization > 0) {
+					// Special case for when wcet is 1 and is not allowed to be less
+					if (_tasks_vector[i].get_wcet() == 1) {
+						break;
+					}
 					add_or_sub = -1;
 				} else {
 					add_or_sub = 1;
 				}
 
 				_tasks_vector[i].set_wcet(_tasks_vector[i].get_wcet() + add_or_sub);
-				
+
 				double utilization_after = total_utilization(_tasks_vector)*100 - this->_utilization;
 				
 				// cast positive for easier comparison
@@ -151,6 +158,11 @@ void RandomSystem::generate_system()
 				if (utilization_before < utilization_after) {
 					// made it worse! 
 					// undo the step
+					// special wcet==0
+					int test = _tasks_vector[i].get_wcet() - 1;
+					if (test == 0) {
+						break;
+					}
 					_tasks_vector[i].set_wcet(_tasks_vector[i].get_wcet() - 1);
 					// go to next task
 					break; // quits the while loop

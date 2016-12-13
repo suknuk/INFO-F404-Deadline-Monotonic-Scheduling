@@ -40,7 +40,8 @@ bool UniprocessorDM::simulate_system(std::vector<Task*> &tasks, std::vector<Task
 				(left < has_to_finish_at) && (wcet_to_fill > 0); 
 				left++)
 			{
-				if ( NULL == schedule[left]) {
+				//if ( NULL == schedule[left]) {
+				if ( schedule.size() > (unsigned)left && schedule[left] == NULL) {
 					schedule[left] = tasks[i];
 					wcet_to_fill -= 1;
 				}

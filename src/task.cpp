@@ -54,7 +54,11 @@ void Task::set_deadline(int deadline)
 
 void Task::set_wcet(int wcet)
 {
-	this->wcet = wcet;
+	if (wcet == 0) {
+		this->wcet = 2;
+	} else {
+		this->wcet = wcet;
+	}
 }
 
 bool operator<(const Task &t1, const Task &t2)
