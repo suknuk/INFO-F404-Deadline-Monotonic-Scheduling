@@ -243,3 +243,24 @@ double system_idle_percentage(std::vector< std::vector<Task*> > &schedule)
 }
 
 
+double system_load_distribution(std::vector< std::vector<Task*> > &schedule, std::vector<Task> &tasks,
+		int processors)
+{
+	// represents the optimal u value of each processor
+	double best_u_distribution = (total_utilization(tasks)/processors)*100;
+	double overflow = 0;
+
+	for (unsigned i = 0; i < schedule.size(); i++) {
+		
+		double proc_u = best_u_distribution - processor_idle_percentage(schedule[i]);
+		if (proc_u < 0) {
+			proc_u *= -1;
+		}
+	//	std::cout << proc_u << " " << best_u_distribution << " " << overflow << std::endl;
+		overflow += proc_u;
+	}
+
+	return overflow;
+}
+
+

@@ -57,4 +57,8 @@ int system_idle_time(std::vector< std::vector<Task*> > &schedule);
 // System idle time in %
 double system_idle_percentage(std::vector< std::vector<Task*> > &schedule);
 
+// Calculating a load distribution factor - less is better
+double system_load_distribution(std::vector< std::vector<Task*> > &schedule, std::vector<Task> &tasks,
+		int processors);
+
 #endif

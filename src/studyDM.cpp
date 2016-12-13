@@ -74,7 +74,9 @@ int main(int argc, char* argv[])
 			std::vector<int> req_g;
 			std::vector<int> req_p;
 
-			std::vector<int> pre_g;
+			// storing distribution values
+			std::vector<double> dist_g;
+			std::vector<double> dist_p;
 
 			// now iterate every possibility and save the output
 			for (int t = 0; t < tasks_descriptions; t++) {
@@ -100,28 +102,41 @@ int main(int argc, char* argv[])
 
 					int processors = ceil(total_utilization(tasks));
 					int study_interval = interval(tasks);
+					std::vector<int> pre_g;
 					
 					display_tasks(tasks);
 
-					std::cout << "trying to find global" << std::endl;
-					req_g.push_back(minimum_global_processors_required(tasks, gschedule, 
-							processors, study_interval, pre_g));
-					std::cout << "found global " << std::endl;
+					// all global strategy values
+					int req_proc_g = minimum_global_processors_required(tasks, gschedule, 
+							processors, study_interval, pre_g);
+					req_g.push_back(req_proc_g);
+					double global_dist = system_load_distribution(gschedule,tasks, req_proc_g);
+					dist_g.push_back(global_dist);
+
+					// partitioned strategy
 					std::vector<UniprocessorDM> pschedule;
-					req_p.push_back(minimum_partitioned_processors_required(tasks,pschedule));
-					std::cout << "found part" << std::endl;
+					int req_proc_p = minimum_partitioned_processors_required(tasks,pschedule);
+					req_p.push_back(req_proc_p);
+
+					std::vector< std::vector<Task*> > pschedule_v = uniprocessors_to_vector(pschedule, pre_g);
+					double partitioned_dist = system_load_distribution(pschedule_v,tasks,req_proc_p);
+					dist_p.push_back(partitioned_dist);
 				}
 			}
 
 			std::string output_file(argv[2]);
 			std::ofstream out(output_file.c_str());
 
-			for (int i = 0; i < 2; i++) {
+			for (int i = 0; i < 4; i++) {
 				int counter = 0;
 				if (i == 0) {
-					out << "global scheduling:\n";
-				} else {
-					out << "partitioned scheduling:\n";
+					out << "global scheduling required processors:\n";
+				} else if (i == 1) {
+					out << "global scheduling distribution load:\n";
+				} else if (i == 2) {
+					out << "partitioned scheduling required processors:\n";
+				} else if(i==3) {
+					out << "partitioned scheduling distribution load:\n";
 				}
 				// write the required processors of each system to file
 				for (int t = 0; t < tasks_descriptions; t++) {
@@ -129,8 +144,12 @@ int main(int argc, char* argv[])
 						
 						if (i == 0) {
 							out << req_g.at(counter) << " ";
-						} else {
+						} else if(i == 1) {
+							out << dist_g.at(counter) << " ";
+						} else if (i == 2) {
 							out << req_p.at(counter) << " ";
+						} else if(i==3){
+							out << dist_p.at(counter) << " ";
 						}
 						counter++;
 					}
@@ -140,7 +159,6 @@ int main(int argc, char* argv[])
 
 			out.close();
 			
-
 		} else {
 			std::cerr << "Could not open input file " << argv[1] << std::endl;
 			return 1;
