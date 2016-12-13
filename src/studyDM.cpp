@@ -86,6 +86,8 @@ int main(int argc, char* argv[])
 					if (task_nr[t]*100 < utilization_nr[u]){
 						req_g.push_back(-1);
 						req_p.push_back(-1);
+						dist_g.push_back(-1);
+						dist_p.push_back(-1);
 						continue;
 					}
 
@@ -93,7 +95,7 @@ int main(int argc, char* argv[])
 				
 					std::cout << "generate : " << task_nr[t] << " " << utilization_nr[u]
 						<< std::endl;
-					RandomSystem rs(task_nr[t], utilization_nr[u], 10000 );
+					RandomSystem rs(task_nr[t], utilization_nr[u], 1000 );
 						
 					std::vector< std::vector<Task*> > gschedule;
 					
@@ -106,12 +108,15 @@ int main(int argc, char* argv[])
 					
 					display_tasks(tasks);
 
+					std::cout << "global starting" << std::endl;
 					// all global strategy values
 					int req_proc_g = minimum_global_processors_required(tasks, gschedule, 
 							processors, study_interval, pre_g);
 					req_g.push_back(req_proc_g);
 					double global_dist = system_load_distribution(gschedule,tasks, req_proc_g);
 					dist_g.push_back(global_dist);
+
+					std::cout << "global done" << std::endl;
 
 					// partitioned strategy
 					std::vector<UniprocessorDM> pschedule;
@@ -121,6 +126,7 @@ int main(int argc, char* argv[])
 					std::vector< std::vector<Task*> > pschedule_v = uniprocessors_to_vector(pschedule, pre_g);
 					double partitioned_dist = system_load_distribution(pschedule_v,tasks,req_proc_p);
 					dist_p.push_back(partitioned_dist);
+					std::cout << "partitioned done" << std::endl;
 				}
 			}
 

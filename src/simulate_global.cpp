@@ -119,6 +119,7 @@ bool do_simulate_global(std::vector<Task> &tasks, int study_interval,
 			// Fill the processors from the left
 			for (int left = position; left < has_to_finish_at ; left++){
 				for (unsigned scheduler_y = 0; scheduler_y < schedule.size(); scheduler_y++) {
+					//std::cout << "scheduler_y loop " << scheduler_y << std::endl;
 					// find emtpy slot
 					if ( NULL == schedule[scheduler_y][left]) {
 						// Store pointer of current task in the slot

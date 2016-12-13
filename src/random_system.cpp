@@ -111,16 +111,24 @@ void RandomSystem::generate_system()
 		this->_tasks_vector.push_back(task);
 	}
 
+
+	std::cout << "start carry" << std::endl;
 	// When the carry value is too big, go back to the list and look where we can increase
 	// the Utilization of single tasks to make it closer to the wanted value
 	if (total_utilization(_tasks_vector)*100 - this->_utilization > 2 || 
 		total_utilization(_tasks_vector)*100 - this->_utilization < -2) {	
 	
 		for (unsigned i = 0; i < _tasks_vector.size(); i++) {
+			int max_time_in_loop = 50; // only allowed 50 iterations in the loop
 			// increase the utilization until 100% or the target total utilization is reached
 			while( _tasks_vector[i].calculate_utilization() < 1 &&
-				(total_utilization(_tasks_vector)*100 - this->_utilization > 2 ||
-				total_utilization(_tasks_vector)*100 - this->_utilization < -2) ) {
+				(total_utilization(_tasks_vector)*100 - this->_utilization > 0 ||
+				total_utilization(_tasks_vector)*100 - this->_utilization < 0) ) {
+
+				max_time_in_loop--;
+				if (max_time_in_loop < 0) {
+					break;
+				}
 
 				// increase the deadline if needed
 				if (_tasks_vector[i].get_deadline() < _tasks_vector[i].get_period() && 
