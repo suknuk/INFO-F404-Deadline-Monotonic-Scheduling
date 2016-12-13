@@ -85,10 +85,11 @@ int main(int argc, char* argv[])
 						continue;
 					}
 
-
 					// generate the random system
-					
-					RandomSystem rs(task_nr[t], utilization_nr[u], 20000 );
+				
+					std::cout << "generate : " << task_nr[t] << " " << utilization_nr[u]
+						<< std::endl;
+					RandomSystem rs(task_nr[t], utilization_nr[u], 10000 );
 						
 					std::vector< std::vector<Task*> > gschedule;
 					
@@ -100,10 +101,13 @@ int main(int argc, char* argv[])
 					
 					display_tasks(tasks);
 
+					std::cout << "trying to find global" << std::endl;
 					req_g.push_back(minimum_global_processors_required(tasks, gschedule, 
 							processors, study_interval));
+					std::cout << "found global " << std::endl;
 					std::vector<UniprocessorDM> pschedule;
 					req_p.push_back(minimum_partitioned_processors_required(tasks,pschedule));
+					std::cout << "found part" << std::endl;
 				}
 			}
 

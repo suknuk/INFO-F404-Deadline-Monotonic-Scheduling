@@ -29,7 +29,6 @@ int minimum_global_processors_required(std::vector<Task> &tasks, std::vector< st
 	// Iterate until system is schedulable with the given processors
 	while(false == do_simulate_global(tasks, study_interval, schedule))
 	{
-		//std::cout << processors << std::endl;
 		processors += 1;
 
 		initialize_global_schedule(schedule, processors, study_interval);
@@ -115,8 +114,6 @@ bool do_simulate_global(std::vector<Task> &tasks, int study_interval,
 			for (int left = position; left < has_to_finish_at ; left++){
 				for (unsigned scheduler_y = 0; scheduler_y < schedule.size(); scheduler_y++) {
 					// find emtpy slot
-					//std::cout << "left: " << left << ", size: " <<schedule[scheduler_y].size() << std::endl;
-				//	if (unsigned(left) < schedule[scheduler_y].size()) {
 					if ( NULL == schedule[scheduler_y][left]) {
 						// Store pointer of current task in the slot
 						schedule[scheduler_y][left] = &tasks[i];
@@ -147,7 +144,6 @@ bool do_simulate_global(std::vector<Task> &tasks, int study_interval,
 			}			
 		}
 	}
-	std::cout << "do end"<< std::endl;
 	// System is schedulable
 	return true;
 }
