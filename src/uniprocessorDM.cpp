@@ -30,8 +30,15 @@ bool UniprocessorDM::simulate_system(std::vector<Task*> &tasks, std::vector<Task
 			position < study_interval;
 			position += tasks[i]->get_period())
 		{
+			
 			// Position by which the current task has to be finished
 			int has_to_finish_at = position + tasks[i]->get_deadline();
+		
+			// nono
+			if (has_to_finish_at > study_interval) {
+				break;
+			}
+			
 			// How many slots we have to fill in the period
 			int wcet_to_fill = tasks[i]->get_wcet();
 			
@@ -40,10 +47,12 @@ bool UniprocessorDM::simulate_system(std::vector<Task*> &tasks, std::vector<Task
 				(left < has_to_finish_at) && (wcet_to_fill > 0); 
 				left++)
 			{
-				//if ( NULL == schedule[left]) {
-				if ( schedule.size() > (unsigned)left && schedule[left] == NULL) {
+				if ( NULL == schedule[left]) {
+				//if ( schedule.size() > (unsigned)left && schedule[left] == NULL) {
 					schedule[left] = tasks[i];
 					wcet_to_fill -= 1;
+					//std::cout << left << " " << schedule.size() << " " << has_to_finish_at
+					//	<< std::endl;
 				}
 			}
 			// system was not schedulable

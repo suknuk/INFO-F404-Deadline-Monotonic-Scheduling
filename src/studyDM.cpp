@@ -70,9 +70,23 @@ int main(int argc, char* argv[])
 				utilization_nr.push_back(u);
 			}
 
-			// save all generated systems in vector of vector
-			//std::vector< std::vector<RandomSystem> > system;
+			/*
+			RandomSystem rs(task_nr[1], utilization_nr[1], 20000 );
+			for (int i = 0; i < 100; i++) {
+				std::vector< std::vector<Task*> > gschedule;
+				
+				std::vector<Task> tasks = rs.get_tasks();
+				std::sort(tasks.begin(), tasks.end(), deadlinePriority);
 
+				int processors = ceil(total_utilization(tasks));
+				int study_interval = interval(tasks);
+			
+				display_tasks(tasks);
+
+				int a = minimum_global_processors_required(tasks, gschedule, 
+						processors, study_interval);
+				std::cout << i << std::endl;
+			}*/
 
 			// storing the minimum requirements for global vs partitioned
 			std::vector<int> req_g;
@@ -129,7 +143,7 @@ int main(int argc, char* argv[])
 			}
 
 			out.close();
-
+			
 
 		} else {
 			std::cerr << "Could not open input file " << argv[1] << std::endl;

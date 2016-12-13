@@ -1,5 +1,5 @@
 CC = g++
-CFLAGS = -c -Wall -Wextra
+CFLAGS = -c -Wall -Wextra -g
 
 #Compiling all programs
 all: simDM taskGenerator studyDM
