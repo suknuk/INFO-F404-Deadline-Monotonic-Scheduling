@@ -164,7 +164,8 @@ void display_tasks(std::vector<Task> &tasks)
 }
 
 
-void display_scheduling(std::vector <std::vector<Task *> > &schedule, bool show_assignment)
+void display_scheduling(std::vector <std::vector<Task *> > &schedule, bool show_assignment,
+		std::vector<int> &preemptions)
 {
 	for (unsigned processor_nr = 0; processor_nr < schedule.size(); processor_nr++) {
 		std::cout << std::setw(6) << "#p" << processor_nr << ":";
@@ -182,10 +183,17 @@ void display_scheduling(std::vector <std::vector<Task *> > &schedule, bool show_
 		std::cout << " || Idle time: " << processor_idle_time(schedule[processor_nr]) << " time units"
 			<< " = " << processor_idle_percentage(schedule[processor_nr]) << "%"
 			<< ", Interval: " << schedule[processor_nr].size()
+			<< ", Preemptions: " << preemptions[processor_nr]
 			<< std::endl;
+	}
+	// getting the total preemptions
+	int total_preemptions = 0;
+	for (unsigned i = 0; i < preemptions.size(); i++) {
+		total_preemptions += preemptions[i];
 	}
 	std::cout << "Total idle time: " << system_idle_time(schedule) << " time units"
 		<< " = " << system_idle_percentage(schedule) << "%" 
+		<< ", total preemptions = " << total_preemptions
 		<< std::endl;
 }
 

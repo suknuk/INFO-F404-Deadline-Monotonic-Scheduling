@@ -8,6 +8,7 @@ class UniprocessorDM
 {
 private:
 	std::vector<Task*> _tasks;
+	int _preemptions;
 
 	// simulating the system and informs of failure/success
 	bool simulate_system(std::vector<Task*> &tasks);
@@ -20,6 +21,7 @@ public:
 	// getters
 	double get_total_utilization();
 	int get_study_interval();
+	int get_preemptions();
 
 	// calculate the DM schedule with the tasks in tasks
 	std::vector<Task *> get_schedule();

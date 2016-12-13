@@ -74,6 +74,8 @@ int main(int argc, char* argv[])
 			std::vector<int> req_g;
 			std::vector<int> req_p;
 
+			std::vector<int> pre_g;
+
 			// now iterate every possibility and save the output
 			for (int t = 0; t < tasks_descriptions; t++) {
 				for (int u = 0; u < utilization_descriptions; u++) {
@@ -103,7 +105,7 @@ int main(int argc, char* argv[])
 
 					std::cout << "trying to find global" << std::endl;
 					req_g.push_back(minimum_global_processors_required(tasks, gschedule, 
-							processors, study_interval));
+							processors, study_interval, pre_g));
 					std::cout << "found global " << std::endl;
 					std::vector<UniprocessorDM> pschedule;
 					req_p.push_back(minimum_partitioned_processors_required(tasks,pschedule));

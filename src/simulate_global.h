@@ -10,13 +10,14 @@ void initialize_global_schedule(std::vector< std::vector<Task*> > &schedule,
 
 // Calculating the minimul # of required processors
 int minimum_global_processors_required(std::vector<Task> &tasks, std::vector< std::vector<Task*> > &schedule,
-	 int processors, int study_interval);
+	 int processors, int study_interval, std::vector<int> &preemptions);
 
 // Calling the simulation for the processors required
-std::vector <std::vector<Task*> > simulate_global(std::vector<Task> &tasks, int processors);
+std::vector <std::vector<Task*> > simulate_global(std::vector<Task> &tasks, int processors,
+		std::vector<int> &preemptions);
 
 // Simulating using the global strategy
 bool do_simulate_global(std::vector<Task> &tasks, int study_interval,
-	std::vector< std::vector<Task*> > &schedule);
+	std::vector< std::vector<Task*> > &schedule, std::vector<int> &preemptions);
 
 #endif

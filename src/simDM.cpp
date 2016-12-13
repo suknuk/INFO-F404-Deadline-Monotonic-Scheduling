@@ -59,14 +59,15 @@ int main(int argc, char* argv[])
 		display_tasks(tasks);	
 
 		std::vector <std::vector<Task *> > schedule;
+		std::vector <int> preemptions;
 
 		if (scheduling_type) {
-			schedule = simulate_global(tasks, processors);
+			schedule = simulate_global(tasks, processors, preemptions);
 		} else {
-			schedule = simulate_partitioned(tasks, processors);
+			schedule = simulate_partitioned(tasks, processors, preemptions);
 		}
 
-		display_scheduling(schedule, show_scheduling);	
+		display_scheduling(schedule, show_scheduling, preemptions);	
 		
 		return 0;
 	}

@@ -5,7 +5,8 @@
 #include "uniprocessorDM.h"
 #include "task.h"
 
-std::vector <std::vector<Task*> > simulate_partitioned(std::vector<Task> &tasks, int processors);
+std::vector <std::vector<Task*> > simulate_partitioned(std::vector<Task> &tasks, int processors, 
+		std::vector<int> &preemptions);
 
 bool do_simulate_partitioned(std::vector<Task> &tasks, int processors, std::vector<UniprocessorDM> &schedule);
 
@@ -13,6 +14,7 @@ bool do_simulate_partitioned(std::vector<Task> &tasks, int processors, std::vect
 int minimum_partitioned_processors_required(std::vector<Task> &tasks, std::vector<UniprocessorDM> &schedule);
 
 // transform the vector of UniprocessorDM to a vector of vector of Task*
-std::vector <std::vector<Task*> > uniprocessors_to_vector(std::vector<UniprocessorDM> &uniprocessors);
+std::vector <std::vector<Task*> > uniprocessors_to_vector(std::vector<UniprocessorDM> &uniprocessors,
+		std::vector<int> &preemptions);
 
 #endif

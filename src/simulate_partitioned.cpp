@@ -6,7 +6,8 @@
 #include "usefull_methods.h"
 #include "simulate_partitioned.h"
 
-std::vector <std::vector<Task*> > simulate_partitioned(std::vector<Task> &tasks, int processors)
+std::vector <std::vector<Task*> > simulate_partitioned(std::vector<Task> &tasks, int processors, 
+		std::vector<int> &preemptions)
 {
 	// Sort tasks by utilization for 'bin fitting'
 	std::sort(tasks.begin(), tasks.end(), utilizationPriority);
@@ -39,7 +40,7 @@ std::vector <std::vector<Task*> > simulate_partitioned(std::vector<Task> &tasks,
 				<< std::endl;
 		}
 	}
-	return uniprocessors_to_vector(schedule); 
+	return uniprocessors_to_vector(schedule, preemptions); 
 }
 
 bool do_simulate_partitioned(std::vector<Task> &tasks, int processors, std::vector<UniprocessorDM> &schedule)
@@ -91,12 +92,14 @@ int minimum_partitioned_processors_required(std::vector<Task> &tasks, std::vecto
 	return processors;
 }
 
-std::vector <std::vector<Task*> > uniprocessors_to_vector(std::vector<UniprocessorDM> &uniprocessors)
+std::vector <std::vector<Task*> > uniprocessors_to_vector(std::vector<UniprocessorDM> &uniprocessors,
+		std::vector<int> &preemptions)
 {
 	std::vector< std::vector<Task*> > schedule_final;
 
 	for (unsigned processor = 0; processor < uniprocessors.size(); processor++) {
 		schedule_final.push_back(uniprocessors[processor].get_schedule());
+		preemptions.push_back(uniprocessors[processor].get_preemptions());
 	}	
 
 	return schedule_final;

@@ -25,6 +25,7 @@ bool UniprocessorDM::simulate_system(std::vector<Task*> &tasks, std::vector<Task
 	// ---------------------
 	// Iterating every task
 	for (unsigned i = 0; i < tasks.size(); i++) {
+		this->_preemptions = 0;
 		// Iterating every period of the task starting at the offset
 		for (int position = tasks[i]->get_offset();
 			position < study_interval;
@@ -34,7 +35,7 @@ bool UniprocessorDM::simulate_system(std::vector<Task*> &tasks, std::vector<Task
 			// Position by which the current task has to be finished
 			int has_to_finish_at = position + tasks[i]->get_deadline();
 		
-			// nono
+			// nonono
 			if (has_to_finish_at > study_interval) {
 				break;
 			}
@@ -47,13 +48,27 @@ bool UniprocessorDM::simulate_system(std::vector<Task*> &tasks, std::vector<Task
 				(left < has_to_finish_at) && (wcet_to_fill > 0); 
 				left++)
 			{
+				
 				if ( NULL == schedule[left]) {
-				//if ( schedule.size() > (unsigned)left && schedule[left] == NULL) {
 					schedule[left] = tasks[i];
 					wcet_to_fill -= 1;
-					//std::cout << left << " " << schedule.size() << " " << has_to_finish_at
-					//	<< std::endl;
+				
+					// fill up to the right to calculate preemptions
+					while ((left+1 < has_to_finish_at) && (wcet_to_fill > 0)) {
+						if (schedule[left+1] == NULL) {
+							schedule[left+1] = tasks[i];
+							wcet_to_fill -=1;
+							left++;
+						} 
+						// otherwise the place is full -> preemption
+						else {
+							this->_preemptions++;
+							break;
+						}
+					}
+
 				}
+			
 			}
 			// system was not schedulable
 			if (wcet_to_fill > 0) {
@@ -78,7 +93,7 @@ bool UniprocessorDM::can_add_task(Task &task)
 	if (total_utilization(tmp_tasks) > 1) {
 		return false;
 	}
-	// TODO: check Utilization of ln2 with the proof of the slides
+	// TODO: check Utilization of ln2 
 	return (simulate_system(tmp_tasks));	
 }
 
@@ -96,6 +111,11 @@ double UniprocessorDM::get_total_utilization()
 int UniprocessorDM::get_study_interval()
 {
 	return interval(this->_tasks);
+}
+
+int UniprocessorDM::get_preemptions()
+{
+	return this->_preemptions;
 }
 
 std::vector<Task *> UniprocessorDM::get_schedule()

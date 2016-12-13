@@ -19,15 +19,13 @@ void initialize_global_schedule(std::vector< std::vector<Task *> > &schedule,
 }
 
 int minimum_global_processors_required(std::vector<Task> &tasks, std::vector< std::vector<Task*> > &schedule, 
-	int processors, int study_interval)
+	int processors, int study_interval, std::vector<int> &preemptions)
 {
-	// higher total U than
-
 	// we have to reset the schedule vector as it has data in it and processors could be changed
 	initialize_global_schedule(schedule, processors, study_interval);
 
 	// Iterate until system is schedulable with the given processors
-	while(false == do_simulate_global(tasks, study_interval, schedule))
+	while(false == do_simulate_global(tasks, study_interval, schedule, preemptions))
 	{
 		processors += 1;
 
@@ -36,7 +34,8 @@ int minimum_global_processors_required(std::vector<Task> &tasks, std::vector< st
 	return processors;
 }
 
-std::vector <std::vector<Task*> > simulate_global(std::vector<Task> &tasks, int processors)
+std::vector <std::vector<Task*> > simulate_global(std::vector<Task> &tasks, int processors, 
+		std::vector<int> &preemptions)
 {
 	//Sorting the tasks according to their deadline
 	std::sort(tasks.begin(), tasks.end(), deadlinePriority);
@@ -54,7 +53,7 @@ std::vector <std::vector<Task*> > simulate_global(std::vector<Task> &tasks, int 
 	std::cout << "Total utilization of the system is " << utilization << std::endl
 		<< "Study interval of the system is " << study_interval << std::endl;	
 	// System can not be scheduled with the #processors
-	if (utilization > (double)processors || !do_simulate_global(tasks,  study_interval, schedule)) {
+	if (utilization > (double)processors || !do_simulate_global(tasks,  study_interval, schedule, preemptions)) {
 		std::cout << "System is unable to be scheduled on this system with "
 			<< processors << " processors. Determining the required number."
 			<< std::endl;
@@ -63,7 +62,7 @@ std::vector <std::vector<Task*> > simulate_global(std::vector<Task> &tasks, int 
 			processors = ceil(utilization);
 		}
 		// find min. required processors
-		processors = minimum_global_processors_required(tasks, schedule, processors, study_interval);
+		processors = minimum_global_processors_required(tasks, schedule, processors, study_interval, preemptions);
 		std::cout << "Number of processors required : " << processors << std::endl;
 	} else {
 		// System can be scheduled
@@ -72,7 +71,7 @@ std::vector <std::vector<Task*> > simulate_global(std::vector<Task> &tasks, int 
 			// use a tmp schedule because we want to return the original schedule, not the optimized one
 			std::vector <std::vector<Task*> > schedule_tmp;
 			// we look between ceil(utilization) and processors
-			int min_processors = minimum_global_processors_required(tasks, schedule_tmp, ceil(utilization), study_interval);
+			int min_processors = minimum_global_processors_required(tasks, schedule_tmp, ceil(utilization), study_interval, preemptions);
 			if (min_processors < processors){
 				std::cout << "System could have been scheduled with " << min_processors << " processors."
 					<< std::endl;
@@ -90,8 +89,14 @@ std::vector <std::vector<Task*> > simulate_global(std::vector<Task> &tasks, int 
 }
 
 bool do_simulate_global(std::vector<Task> &tasks, int study_interval, 
-	std::vector< std::vector<Task *> > &schedule)
-{
+	std::vector< std::vector<Task *> > &schedule, std::vector<int> &preemptions)
+{	
+	// initializing the preemption vector
+	preemptions.clear();
+	for (unsigned i = 0; i < schedule.size(); i++) {
+		preemptions.push_back(0);
+	}
+
 	// Iterating every task by priority 
 	for (unsigned i = 0; i < tasks.size(); i++) {
 		// Iterating every period of the task starting at the offset
@@ -118,7 +123,25 @@ bool do_simulate_global(std::vector<Task> &tasks, int study_interval,
 						// Store pointer of current task in the slot
 						schedule[scheduler_y][left] = &tasks[i];
 						wcet_to_fill -= 1;
-					
+						left++;
+			
+						
+						while ((wcet_to_fill > 0) && (left + 1 < has_to_finish_at)) { 
+							// spot free on the right?
+							if (NULL == schedule[scheduler_y][left+1]) {
+								schedule[scheduler_y][left+1] = &tasks[i];
+								wcet_to_fill--;
+								left++;
+							}
+							// nope
+							else {
+								// preemptions add
+								preemptions[scheduler_y] = preemptions[scheduler_y] + 1;
+								goto evil_goto;
+							}
+							
+						}
+						/*
 						// Left look ahead on the current processor for empty spots
 						for (;wcet_to_fill > 0 && 			// There are still wcet to fill
 							(unsigned)left < schedule[scheduler_y].size() && // valgrind debugging
@@ -129,9 +152,10 @@ bool do_simulate_global(std::vector<Task> &tasks, int study_interval,
 							schedule[scheduler_y][left+1] = &tasks[i];
 							wcet_to_fill--;
 							left++;
-						}
+						}*/
+						evil_goto:
 						break;
-					}
+					} 
 				}
 				// no more slots to fill -> next period
 				if (wcet_to_fill == 0) {
