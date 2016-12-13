@@ -8,6 +8,7 @@ int time_counter = 0;
 
 void RandomSystem::generate_system()
 {
+start_again:
 	std::srand(std::time(0 << (time_counter)));
 	time_counter++;
 	// create a random max_Period between 9 + #tasks*2  and 100 
@@ -34,6 +35,8 @@ void RandomSystem::generate_system()
 
 	// store the LCM, otherwise, with too many tasks, we might get a value too large
 	int total_lcm = 1;
+
+	_tasks_vector.clear();
 
 	//std::vector<Task> tasks;
 	// find values that try to match the utilization given by the generated utilization value
@@ -112,7 +115,11 @@ void RandomSystem::generate_system()
 	}
 
 
-	std::cout << "start carry" << std::endl;
+	// start again when to interval is too large
+	if (_max_hyper_period > 500000) {
+		goto start_again;
+	}
+
 	// When the carry value is too big, go back to the list and look where we can increase
 	// the Utilization of single tasks to make it closer to the wanted value
 	if (total_utilization(_tasks_vector)*100 - this->_utilization > 2 || 
